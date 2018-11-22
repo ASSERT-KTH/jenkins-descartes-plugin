@@ -1,5 +1,7 @@
 This is a React App using the with react/D3.js library http://nivo.rocks
 
+More examples of graphs: http://nivo.rocks/storybook/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

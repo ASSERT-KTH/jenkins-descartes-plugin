@@ -1,3 +1,7 @@
+
+Build status for dhell project, just trying out icon:
+[![Build Status](http://130.237.59.170:8080/buildStatus/icon?job=test)](http://130.237.59.170:8080/job/test)
+
 # jenkins-descartes-plugin
 A Jenkins plugin to run PIT / Descartes analysis and store the data 
 [Descartes](https://github.com/STAMP-project/pitest-descartes) is an open source tool to detect pseudo-tested methods in Java code.

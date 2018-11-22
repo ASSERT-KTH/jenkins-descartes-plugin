@@ -1,3 +1,9 @@
+This project creates a node.js Server that can recieve a Webhook message/json from GitHub and act as first person citizen on a GitHub repository. 
+
+A GitHub App is created on github.com and then installed on a GitHub account, with access to one or more GitHub repositories.
+
+Further explanations:
+
 # Building a GitHub App in Node.js
 
 This tutorial will walk you through creating and deploying a GitHub App that comments on any new issue that is opened on a GitHub repository.

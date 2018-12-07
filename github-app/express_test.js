@@ -10,9 +10,18 @@ const webHookHandler = require('github-webhook-handler')({
 })
 
 
-const createApp = require('@octokit/rest');
+//const createApp = require('github-app'); // byt till @octa-kit... men då måste create app bytas ..
 
-const github_app = createApp({
+/* såhär skulle man kunna göra..
+// GitHub app
+
+octokit.authenticate({
+  type: 'app',
+  token: 'secrettoken123'
+})
+*/
+
+const github_app = require('github-app')({
   id: process.env.APP_ID,
   cert: require('fs').readFileSync('testdescartes.2018-11-12.private-key.pem')
 })
@@ -24,42 +33,100 @@ var jsonParser = bodyParser.json() // create application/json parser
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 // on push event - when someone commits code -> run jenkins build
-webHookHandler.on('push', (event) => {
+//webHookHandler.on('push', (event) => {
+webHookHandler.on('check_suite', (event) => {   // borde de inte va  check_run ??....
 
+
+// Kanske bra att ha sen...
+//if (event.payload.action !== 'requested') return
+
+/* Kör jenkins sen..
 var jenkins = require('jenkins')({ baseUrl: 'http://admin:admin@130.237.59.170:8080', crumbIssuer: true });
 
 jenkins.job.build('test', function(err, data) {
   if (err) throw err;
   console.log('queue item number', data);
 });
-// decorative link... 
+*/
 
-  const {installation, repository, issue} = event.payload
+  const {installation, repository, check_suite} = event.payload
 
   github_app.asInstallation(installation.id).then((github) => {
 
-      github.issues.createComment({
+      github.checks.update({  
+
         owner: event.payload.repository.owner.login,
         repo: event.payload.repository.name,
-        number: event.payload.issue.number,
-        body: 'Welcome to the robot uprising.'
-      });
+        check_run_id : check_suite.id,
+        name: 'Commit decoration.',
+
+  output: {
+        title: 'Title text..',
+        summary: 'summery text..',
+        text: 'my text..'
+        },
+
+ actions: [{
+        label: '✅ Ready for review..',
+        description: 'mydescription.',
+        identifier: 'myidentifier'
+        }]      
+     });
+   });
+
+
+/*
+  github_app.asInstallation(installation.id).then((github) => {
+
+const result = await github.checks.update({
+
+	  owner, 
+	  repo, 
+	  check_run_id, 
+	  name, 
+	  details_url, 
+	  external_id, 
+	  started_at, 
+	  status, 
+	  conclusion, 
+	  completed_at, 
+	output, 
+	output.title, 
+	output.summary, 
+	output.text, 
+	output.annotations, 
+	output.annotations[].path, 
+	output.annotations[].start_line, 
+	output.annotations[].end_line, 
+	output.annotations[].start_column, 
+	output.annotations[].end_column, 
+	output.annotations[].annotation_level, 
+	output.annotations[].message, 
+	output.annotations[].title, 
+	output.annotations[].raw_details, 
+	output.images, output.images[].alt, 
+	output.images[].image_url, 
+	output.images[].caption,
+	 actions, actions[].label, 
+	actions[].description, 
+	actions[].identifier})
+    
     });
 
+*/
+
 //
-//  OBS!!!!!!!!!! ska man inte skicka tillbaka webhook SIST...EFTER att man har kört Jenkins...
-// för... man vill ju ha med Jenkins data!?!?...tror jag..kolla UPPPPPPPP!!
-  
+// OBS, ska man inte skicka tillbaka webhook SIST...EFTER att man har kört Jenkins...när man har jenkins data. Jo.
 
  
-console.log('POST request from hook..someone commited code!')
+console.log('POST request from hook..someone commited code!...checks API running..')
 })
 
 // GET method route
 app.get('/', function (req, res) {
 
 
-// gör detta här bara för jag inte vet var de ska ligga..eller när de ska köras!!!
+// Testar bara..
 /////////////////////////PARSING!/////////////////////
 
 
@@ -74,15 +141,10 @@ console.log("\n *EXIT* \n");
 // report are at....
 //martinch@server170:/var/lib/jenkins/workspace/test/target/pit-reports$ 
 
-// crazy path!...
+// ..my path...
 // ../../../../../var/lib/jenkins/workspace/test/target/pit-reports
 
 
-// vad vill jag nu.. mm... gå igenom alla..
-
-// metod 1.. ta den senaste... kör ett skript..eller nått..varje gång ett nytt bygge sker..
-
-// om den nu är en node js..fil.. 
    
    // ta den nyaste foldern.. gå in.. läs in methods filen.. parsa det du vill för specifik graph.
    // .. spara undan som en fil i en speciell egen folder...
@@ -94,8 +156,6 @@ console.log("\n *EXIT* \n");
 // 201811202204  201811261243  201811261345  201811291022	201811291032  201811291113  201811291119  201811291122	201811301329  201812031414
 
 
-
-
 /*
 var obj = require('./myjson'); // no need to add the .json extension
 
@@ -103,10 +163,6 @@ var jsonQobj=jsonQ(jsonObj);
 
 jsonQ(jsonObj).find("name").value();
 */
-
-
-
-////////////////////////////////////////////////////////
 
 
 res.send('GET request to the homepage')
@@ -128,12 +184,8 @@ app.use('/api', router);
 router.post('/', jsonParser, function (req, res) {
 
 
-  // time to produce fancy stufff...
+  // time to produce fancy stuff...
 
-  // 1) nu vet man .. vilket jenkins bygge det är.. så man kan redan nu skicka en DECORATING LINk..
-
-  // 2) formatera om JSON/METHODS bygget -> datatypen som graphen vill ha..
-        // spara undan det i någon folder??..
    
  console.log('Bodyparser..POST request..')
  console.log(req.body)
@@ -143,23 +195,3 @@ router.post('/', jsonParser, function (req, res) {
 
 // set the server to listen on port 3000
 app.listen(port, () => console.log('Listening on port 3000'));
-
-
-/* bonus code.. :-)
-
-webHookHandler.on('issues', (event) => {
-  // ignore all issue events other than new issue opened
-  if (event.payload.action !== 'opened') return
-
-  const {installation, repository, issue} = event.payload
-  app_github.asInstallation(installation.id).then((github) => {
-    	({
-      owner: repository.owner.login,
-      repo: repository.name,
-      number: issue.number,
-      body: 'Welcome to the robot uprising.'
-    })
-  })
-})
-
-*/

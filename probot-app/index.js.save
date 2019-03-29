@@ -1,0 +1,208 @@
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+
+// New Code
+var mongo = require('mongodb');
+var monk = require('monk');
+var db = monk('localhost:27017/commits');
+
+var indexRouter = require('./routes/index');
+//var usersRouter = require('./routes/users');
+
+var app2 = express();
+
+// view engine setup
+
+app2.set('views', path.join(__dirname, 'views'));
+app2.set('view engine', 'jade');
+
+app2.use(logger('dev'));
+app2.use(express.json());
+app2.use(express.urlencoded({ extended: false }));
+app2.use(cookieParser());
+app2.use(express.static(path.join(__dirname, 'public')));
+
+// Make our db accessible to our router
+app2.use(function(req,res,next){
+    req.db = db;
+    next();
+});
+
+app2.use('/', indexRouter);
+//app2.use('/users', usersRouter);
+
+// catch 404 and forward to error handler
+app2.use(function(req, res, next) {
+  next(createError(404));
+});
+
+// error handler
+app2.use(function(err, req, res, next) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+  // render the error page
+  res.status(err.status || 500);
+  res.render('error');
+});
+
+module.exports = app2;
+
+
+
+
+
+/////////// above is... from tutorial..
+var my_context
+
+module.exports = app => {
+
+  app.log('Yay, the app was loaded!')
+
+//////////// new code
+
+/////////////// Github sends PAYLOAD ////////////////////////
+  app.on('push', async context => {
+
+    var jenkins = require('jenkins')({ baseUrl: 'http://admin:admin@130.237.59.170:8080', crumbIssuer: true })
+
+    jenkins.job.build('test', function (err, data) {
+      if (err) throw err
+      console.log('queue item number', data)
+    })
+
+    my_context = context  // save payload
+
+    app.log('push event fired')
+    app.log(context.payload)
+
+  })
+
+
+
+
+}
+////////////////////////////////////////////////////////
+
+//////////// post back to GitHUB - remove for now. /////////////////////////////////////////////
+
+// skapa bara en url på github - som pekar på index sidan..easy..skapa inte en fil..html... men ...gör detTA I ROUTERS/INDEX SIDAN!!! EJ HÄR..!!ELLLER...
+// VÄNTA,,MM...DU VILL KÖR nått...härifrån.. jo.... de skulle kunna ligga någonannanstans....mm....det är ju bara en ...sida..som jenkin kallar ..postar till.!!
+
+// kanske borde hete /postgithubstatus ..så kan den ligga under routes.. skit i denna för now.. gör den efter index funkar..
+
+
+/*
+
+  const router = app.route('/')
+  router.use(require('express').static('public'))
+
+  //var express = require('express')
+  var bodyParser = require('body-parser')
+
+  // create application/json parser
+  var jsonParser = bodyParser.json()
+
+  router.post('/app', jsonParser,async function (req, res) {
+
+    var jsonQ = require('jsonq')
+    var glob = require('glob')
+
+    // files is an array of filenames.
+   //TOG BORT...HÄR
+
+      if (err) {
+        console.log(err)
+      } else {
+
+        // a list of paths to javaScript files in the current working directory
+        var jsonfile = files.slice(-1).pop()
+
+        console.log(jsonfile)
+
+        // nu vill jag skapa ett json object från filen.... så ja kan parsa..
+        const fs = require('fs')
+
+        let rawdata = fs.readFileSync(jsonfile)
+        let methodsjson = JSON.parse(rawdata)
+        var jsonQobj = jsonQ(methodsjson)
+
+        console.log(req.body)
+
+        var jenkinsobj = jsonQ(req.body)
+
+        var jenkins_status = jenkinsobj.find('build').find('status').firstElm().toLowerCase();
+
+        var jenkins_all = jenkinsobj.find('build').find('url').firstElm()
+        var jenkins_info = jenkins_all.replace(/\//g, "_")
+
+        // replace / with _
+       console.log('jenk_:'+ jenkins_info)
+       console.log('jenk_status:'+ jenkins_status)
+
+        var package = jsonQobj.find('package')
+        p_methods = jsonQobj.find('methods').find('classification')
+
+        console.log(p_methods.value())
+
+        var tested = 0
+        var partial = 0
+        var not_covered = 0
+
+        jsonQ.each(p_methods.value(), function (key, value) {
+          console.log(key + ' : ' + value)
+
+          if (value === 'tested')
+            tested++
+
+          if (value === 'partially-tested')
+            partial++
+
+          if (value === 'not-covered')
+            not_covered++
+        })
+
+        console.log(tested)
+        console.log(partial)
+        console.log(not_covered)
+
+        //to filter methods that are only partially tested-- fnkar inte! vetej-- kanske förman kan inte filtrera på string värden..
+        var createHTML = require('create-html')
+
+        var html = createHTML({
+          lang: 'en',
+          dir: 'rtl',
+          head: '<meta name="description" content="example">',
+          body: '<p>Commit ID: ' + my_context.payload.head_commit.id + '</p><p>Package: ' + package.firstElm() + '</p><p>Tested: ' + tested + '</p><p>Partially-tested: ' + partial + '</p><p>Not-covered: ' + not_covered + '</p>' + '<div id="root"></div><script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script><script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script><script src="../like_button.js"></script><script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>'
+        })
+
+        fs.writeFile(__dirname + '/public/my_index_' + my_context.payload.head_commit.id + jenkins_info +'.html', html, function (err) {
+          if (err) console.log(err)
+        })
+
+       console.log('id:'+my_context.payload.head_commit.id)
+
+        const commitstatus = my_context.repo({
+
+          owner: 'martinch-kth',
+          repo: 'dhell',
+          sha: my_context.payload.head_commit.id,
+          description: jenkins_info,
+          context: 'CI/jenkins',
+          target_url: 'http://130.237.59.170:3000/my_index_' + my_context.payload.head_commit.id + jenkins_info +'.html',
+          state: jenkins_status
+        })
+
+        return my_context.github.repos.createStatus(commitstatus)
+      }
+    })
+
+  })
+
+}
+
+*/

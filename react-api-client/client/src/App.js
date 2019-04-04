@@ -241,7 +241,7 @@ class App extends Component {
                             <Grid.Column>
                                 <Segment raised>
                                     <Statistic>
-                                        <Statistic value={this.state.commit_data.tested_total} label="tested" size="small" color="black" />
+                                        <Statistic value={this.state.commit_data.tested_total} label="tested" size="small" color="teal" />
                                     </Statistic>
                                 </Segment>
                             </Grid.Column>
@@ -249,7 +249,7 @@ class App extends Component {
                             <Grid.Column>
                                 <Segment raised>
                                     <Statistic>
-                                        <Statistic value={this.state.commit_data.partially_tested_total} label="Partially tested" size="small" color="black" />
+                                        <Statistic value={this.state.commit_data.partially_tested_total} label="Partially tested" size="small" color="yellow" />
                                     </Statistic>
                                 </Segment>
                             </Grid.Column>
@@ -257,7 +257,7 @@ class App extends Component {
                             <Grid.Column>
                                 <Segment raised>
                                     <Statistic>
-                                        <Statistic value={this.state.commit_data.non_covered_total} label="non-covered" size="small" color="black" />
+                                        <Statistic value={this.state.commit_data.non_covered_total} label="non-covered" size="small" color="orange" />
                                     </Statistic>
                                 </Segment>
                             </Grid.Column>

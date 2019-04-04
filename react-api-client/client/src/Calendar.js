@@ -51,7 +51,7 @@ class Calendar extends Component {
                     ]
                 }
             ],
-            color: "#0500f0",
+            color: "#ffc153",
             overview: 'year',
             data_loaded : false
         }

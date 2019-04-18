@@ -2,6 +2,9 @@ import React, {Fragment} from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+
+// lagg in sen ... import Jsonresult from './Jsonresult'
+
 import Menu from './Menu';
 
 import * as serviceWorker from './serviceWorker';
@@ -18,6 +21,7 @@ import Calendar from "./Calendar";
 
 const panes = [
     { menuItem: 'Commit Result', render: () => <Tab.Pane> <App/> </Tab.Pane> },
+    { menuItem: 'JSON Result', render: () => <Tab.Pane> <App/> </Tab.Pane> },
     { menuItem: 'Historical Results', render: () => <Tab.Pane><Calendar/></Tab.Pane> },
     { menuItem: 'Stats', render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> },
 ]

@@ -8,10 +8,6 @@ import './App.css';
 
 import { ResponsiveTreeMapHtml } from '@nivo/treemap'
 
-
-
-
-
 //import roundNode from "./round";
 
 import axios from 'axios';
@@ -282,11 +278,12 @@ class App extends Component {
                                 root={JSON.parse(this.state.commit_data.treemap)}
                                 identity="name"
                                 value="loc"
-                                innerPadding={5}
-                                outerPadding={5}
+                                innerPadding={3}
+                                outerPadding={3}
 
                                 label="loc"
                                 labelFormat="0"
+                               
                                 labelSkipSize={2}
                                 labelTextColor="inherit:darker(1.2)"
                                 colors="red_yellow_green"

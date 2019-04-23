@@ -12,6 +12,7 @@
     "moment": "^2.24.0",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
+    "react-json-view": "^1.19.1",
     "react-modal": "^3.8.1",
     "react-scripts": "2.1.8",
     "reactjs-calendar-heatmap": "file:../../reactjs-calendar-heatmap",

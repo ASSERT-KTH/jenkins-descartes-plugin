@@ -80,6 +80,18 @@ router.get('/getCalenderData', function(req, res) {
             }
         });
 
+        // update the total in array. Value is partially tested and the Total is now average of the values (partially tested)
+        dataQ.forEach(function(element, index) {
+
+            var sum = 0
+            element.details.forEach(function(element, index) {
+
+                sum += parseInt(element.value, 10);
+            });
+
+            element.total = Math.round(sum/element.details.length)
+        });
+
         console.log("--------------------RESULT-----------------------------")
     //    console.log(JSON.stringify(dataQ))
 

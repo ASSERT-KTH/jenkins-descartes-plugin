@@ -1,0 +1,8 @@
+[PM2] Starting /usr/local/bin/npm in fork_mode (1 instance)
+[PM2] Done.
+┌──────────┬────┬─────────┬──────┬────────┬────────┬─────────┬────────┬─────┬──────────┬──────────┬──────────┐
+│ App name │ id │ version │ mode │ pid    │ status │ restart │ uptime │ cpu │ mem      │ user     │ watching │
+├──────────┼────┼─────────┼──────┼────────┼────────┼─────────┼────────┼─────┼──────────┼──────────┼──────────┤
+│ npm      │ 0  │ N/A     │ fork │ 129711 │ online │ 0       │ 0s     │ 0%  │ 4.0 KB   │ martinch │ disabled │
+└──────────┴────┴─────────┴──────┴────────┴────────┴─────────┴────────┴─────┴──────────┴──────────┴──────────┘
+ Use `pm2 show <id|name>` to get more details about an app

@@ -1,6 +1,6 @@
 .chart {
   float: left;
-  width: 950px;
+  width: 915px;
   height: 550px;
 }
 
@@ -79,14 +79,5 @@ a{
 }
 
 
-.ui.container {
-  width: 90% !important;
-}
 
-
-ui.grid > [class*="twelve wide"].column {
-
-  width: 5% !important;
-
-}
 

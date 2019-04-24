@@ -4,6 +4,8 @@ import axios from 'axios'
 
 import ReactJson from 'react-json-view'
 
+import JSONPretty from 'react-json-pretty';
+
 class Treeview extends Component {
 
     constructor(props) {
@@ -33,12 +35,20 @@ class Treeview extends Component {
     }  
 
 
-    render() {
 
-        return (
-                 <ReactJson src={JSON.parse(this.state.commit_data.packages_partially_tested)} />
-        )
-    } 
+  render() {
+
+   // var data = Array.from(this.state.commit_data.packages_partially_tested);
+
+    return (
+     
+      <ReactJson src={JSON.parse(this.state.commit_data.packages_partially_tested)} name={false} displayDataTypes={false} collapsed={false} />
+
+
+    );
+  }
+
+
 }
 export default Treeview;
 

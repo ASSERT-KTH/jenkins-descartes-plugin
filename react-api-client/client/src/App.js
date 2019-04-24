@@ -278,15 +278,15 @@ class App extends Component {
                                 root={JSON.parse(this.state.commit_data.treemap)}
                                 identity="name"
                                 value="loc"
-                                innerPadding={3}
-                                outerPadding={3}
+                                innerPadding={0}
+                                outerPadding={1}
 
                                 label="loc"
                                 labelFormat="0"
                                
                                 labelSkipSize={2}
-                                labelTextColor="inherit:darker(1.2)"
-                                colors="red_yellow_green"
+                                labelTextColor="black"
+                                colors="white"
                                 colorBy="name"
                                 borderColor="inherit:darker(0.3)"
                                 animate={true}

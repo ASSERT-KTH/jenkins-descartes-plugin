@@ -47,7 +47,7 @@ class Calendar extends Component {
                     ]
                 }
             ],
-            color: "#0500f0",
+            color: "#ffc153",
             overview: 'year',
             data_loaded : false
         }
@@ -86,7 +86,7 @@ class Calendar extends Component {
 
             <CalendarHeatmap
                 data={this.state.data}
-              //  color={this.state.color}
+                color={this.state.color}
                 overview={this.state.overview}
                 handler={this.print.bind(this)}>
             </CalendarHeatmap>

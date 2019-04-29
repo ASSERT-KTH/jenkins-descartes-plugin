@@ -8,8 +8,6 @@ import './App.css';
 
 import { ResponsiveTreeMapHtml } from '@nivo/treemap'
 
-//import roundNode from "./round";
-
 import axios from 'axios';
 import round from "./round";
 
@@ -155,16 +153,20 @@ class App extends Component {
 
         console.log(this.state.commit_data.packages_partially_tested)
 
-        var some_data = JSON.parse(this.state.commit_data.packages_partially_tested)  // convert obj to array ..JSON.parse??
+        var some_data = JSON.parse(this.state.commit_data.packages_partially_tested)  
 
         if (e.id === "Partially tested")
         {
             console.log("partially Tested!!!!")
 
             var packname = e.parent.id
+ 
+            console.log(packname)
 
             //    var arr = some_data[packname]
             var arr = some_data[packname]
+
+        
 
             // fel men,,, vet ej hur..empty model array..
             this.state.modal_items = []

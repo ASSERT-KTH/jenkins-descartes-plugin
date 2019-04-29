@@ -8,8 +8,6 @@ import { Statistic,Grid, Placeholder, Header , Segment } from 'semantic-ui-react
 
 import axios from 'axios';
 
-import './Treeview.css';
-
 class Treeview extends Component {
 
     constructor(props) {
@@ -26,40 +24,45 @@ class Treeview extends Component {
             treeview_items : [],
             data_loaded : false
         };
-
-        this.printTreeview = this.printTreeview.bind(this);        
-    }
-
-    callAPI() {
-         fetch("http://130.237.59.170:3002/users" + window.location.pathname)
-            .then(res => res.json())
-            .then(res => this.setState({ commit_data: res,
-                                         data_loaded: true
-            })).catch(err => err)
+        this.componentDidMount = this.componentDidMount.bind(this);
     }
 
     componentDidMount() {
-        this.callAPI();
-      //  this.printTreeview();
-    }
 
-    printTreeview (){
+            axios.get("http://130.237.59.170:3002/users" + window.location.pathname)
+
+                .then(({ data }) => {
+                    this.setState({
+                        commit_data : data,
+                        data_loaded : true,
+                        treeview_items : []
+                    });
+                });
+    }  
+
+  render() {
+
+        if (this.state.data_loaded === false) {
+            return null;
+        }
 
 // packages_partially_tested  ... detta är en array.. med paketnamn : array av länkar.. link 1: some/link/osv
-           console.log("partially Tested!!!! NEW PAGE ")
 
+           console.log("partially Tested!!!! NEW PAGE ")
+     
            var data = JSON.parse(this.state.commit_data.packages_partially_tested);
 
-           this.state.treeview_items = []
-
            Object.keys(data).forEach(function(key) {
-
-           if (data[key].length)
+             
+              if (data[key].length)
               {    
                // få array med alla länkar för det paketet
                var arr = data[key]
-               this.state.treeview_items.push(<Header className='myHeader' as='h3'>{key}</Header>) // få in paketnamn..
-    
+
+
+           // fel men,,, vet ej hur..empty model array..
+         //  this.state.treeview_items = []
+
 
             for (var i = 0; i < arr.length; i++){ 
                 var obj = arr[i];
@@ -68,32 +71,21 @@ class Treeview extends Component {
                     var attrValue = obj[key];
 
                     // jag behöver inte... detta längre.. tror ja vill  ha hela..
-                 //   var lastPart = attrValue.split("/").pop();
+                    var lastPart = attrValue.split("/").pop();
 
-                  //  console.log(attrValue)
-                //    console.log(this.state.treeview_items)
-                    this.state.treeview_items.push(<p className="mylinks"><a href={attrValue}>{attrValue}</a></p>)
+                    console.log(attrValue)
+                  
+                //  this.setState({  treeview_items.push(<li key={attrValue}><a href={attrValue}>{lastPart}</a></li>)  });
 
-      //              var newStateArray = this.state.treeview_items.slice();
-      //              newStateArray.push(<li key={attrValue}><a href={attrValue}>{lastPart}</a></li>);
-      //              this.setState({treeview_items : newStateArray});
+
+                    var newStateArray = this.state.treeview_items.slice();
+                    newStateArray.push(<li key={attrValue}><a href={attrValue}>{lastPart}</a></li>);
+                    this.setState({treeview_items : newStateArray});
+
                 }
-            } //for....
-           }  //if      
-          }.bind(this));           
-
-     // console.log(this.state.treeview_items)
-
-    }
-
-
-  render() {
-
-        if (this.state.data_loaded === false) {
-            return null;
-        }
-   
-        this.printTreeview(); 
+            }
+      }        
+     });           
 
     return (
 
@@ -106,13 +98,7 @@ class Treeview extends Component {
                   </Grid.Column>
                 </Grid.Row>
     
-        <div> 
-
-          {this.state.treeview_items.map(item => (
-                                     <div>{item}</div>
-                                   ))}
-
-        </div>
+        <div>yeaah</div>
 
      </Grid>
 

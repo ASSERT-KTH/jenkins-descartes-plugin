@@ -4,6 +4,10 @@ import CalendarHeatmap from 'reactjs-calendar-heatmap'
 
 import axios from 'axios';
 
+import {Segment, Grid, Header } from 'semantic-ui-react'
+
+
+
 class Calendar extends Component {
 
     constructor(props) {
@@ -82,7 +86,17 @@ class Calendar extends Component {
             return null;
         }
 
+
+
         return (
+        <Grid>
+                <Grid.Row>
+                  <Grid.Column width={9}>
+                      <Header as='h3' dividing>
+                          Evolution of Partially Tested Methods Over Time
+                      </Header>
+                  </Grid.Column>
+                </Grid.Row>                
 
             <CalendarHeatmap
                 data={this.state.data}
@@ -90,6 +104,9 @@ class Calendar extends Component {
                 overview={this.state.overview}
                 handler={this.print.bind(this)}>
             </CalendarHeatmap>
+
+         </Grid>
+
         )
     }
 }

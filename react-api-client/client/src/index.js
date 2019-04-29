@@ -22,9 +22,8 @@ import Calendar from "./Calendar";
 
 const panes = [
     { menuItem: 'Commit Result', render: () => <Tab.Pane> <App/> </Tab.Pane> },
-    { menuItem: 'JSON Result', render: () => <Tab.Pane> <Treeview/> </Tab.Pane> },
+    { menuItem: 'Partially Tested', render: () => <Tab.Pane> <Treeview/> </Tab.Pane> },
     { menuItem: 'Historical Results', render: () => <Tab.Pane><Calendar/></Tab.Pane> },
-    { menuItem: 'Stats', render: () => <Tab.Pane>Tab 3 Content</Tab.Pane> },
 ]
 
 

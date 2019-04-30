@@ -32,15 +32,17 @@ Like this:
 
 ![git/git image](doc/1.png)
 
-
 Click the green checkmark, a pop-up window will appear ->
+
+![git/git image](doc/2.png)
 
 Click the ‘Details’ link to see commit result ->
 
-
+![git/git image](doc/3.png)
 
 There is also a calendar displaying partially tested results for each commit:
 
+![git/git image](doc/4.png)
 
 Troubleshot:
 

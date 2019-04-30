@@ -18,6 +18,8 @@ var Stats = mongoose.model('Stats',statsSchema);
 
 var my_context
 
+var installation_id
+
 module.exports = app => {
 
     app.log('Yay, the app was loaded!')
@@ -33,7 +35,11 @@ module.exports = app => {
             console.log('queue item number', data)
         })
 
+        //  save... workaround for -> https://github.com/bobvanderlinden/probot-auto-merge/pull/246
         my_context = context  // save payload
+        installation_id = my_context.payload.installation.id // save id
+        my_app = app // save app
+        //-----------------------------------------------------------------------------------------
 
         app.log('push event fired')
         app.log(context.payload)
@@ -51,6 +57,23 @@ module.exports = app => {
     var jsonParser = bodyParser.json()
 
     router.post('/app', jsonParser,async function (req, res) {
+
+    // getting expired credential 
+
+    //the token used in `context.github` expires after 59 minutes and Probot caches it. 
+    //Since you have `context.payload.installation.id`, you can reauthenticate the client with:
+
+    my_app.auth(installation_id)   // re-authenticate... testar...!
+
+console.log("some keep-aliveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+
+    console.log(app.auth(installation_id)) 
+
+console.log("---------------------------------")
+console.log(my_context.payload.installation.id)
+console.log("..................................")
+
+
 
         var jsonQ = require('jsonq')
         var glob = require('glob')

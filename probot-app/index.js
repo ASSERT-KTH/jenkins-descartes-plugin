@@ -16,9 +16,12 @@ var statsSchema = new mongoose.Schema({
 
 var Stats = mongoose.model('Stats',statsSchema);
 
-var my_context
 
+// SAVE for re-authentication 
+var my_context
 var installation_id
+var my_app
+//----------------------------------------
 
 module.exports = app => {
 
@@ -63,7 +66,12 @@ module.exports = app => {
     //the token used in `context.github` expires after 59 minutes and Probot caches it. 
     //Since you have `context.payload.installation.id`, you can reauthenticate the client with:
 
-    my_app.auth(installation_id)   // re-authenticate... testar...!
+    const log = my_app.log
+
+    my_app.auth(installation_id,log)   // re-authenticate... testar...!
+
+// tror man måste spara...skapa githubAPI ..va är det??
+
 
 console.log("some keep-aliveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
 
@@ -71,6 +79,8 @@ console.log("some keep-aliveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
 
 console.log("---------------------------------")
 console.log(my_context.payload.installation.id)
+
+console.log(log)
 console.log("..................................")
 
 
@@ -106,7 +116,7 @@ console.log("..................................")
                 {
                     var obj = allmethods[i];
 
-                    console.log(obj.classification);
+//                    console.log(obj.classification);
 
                     temp.push(obj.package)
 
@@ -136,8 +146,8 @@ console.log("..................................")
                 {
                     var obj = allmethods[i];
 
-                    console.log(obj.package);
-                    console.log(obj.classification);
+  //                  console.log(obj.package);
+  //                  console.log(obj.classification);
 
                     array_all.forEach(function(entry) {
 

@@ -10,23 +10,19 @@ db.once('open', function() {
 });
 
 var statsSchema = new mongoose.Schema({
-    commit_id:String, date: { type: Date, default: Date.now }, username:String, repository:String,packages_partially_tested: String,commit_url: String, treemap : String, methods_total: String ,tested_total:String, partially_tested_total: String, non_covered_total: String
+    commit_id:String, date: { type: Date, default: Date.now }, username:String, repository:String,packages_partially_tested: String,packages_pseudo_tested: String,
+                              commit_url: String, treemap : String, methods_total: String ,tested_total:String, partially_tested_total: String, pseudo_tested_total: String, non_covered_total: String
 });
 
-
-var Stats = mongoose.model('Stats',statsSchema);
-
+var Stats = mongoose.model('Stats',statsSchema)
 
 // SAVE for re-authentication 
 var my_context
 var installation_id
-var my_app
-//----------------------------------------
 
 module.exports = app => {
 
     app.log('Yay, the app was loaded!')
-
 
 // Github sends PAYLOAD
     app.on('push', async context => {
@@ -38,15 +34,11 @@ module.exports = app => {
             console.log('queue item number', data)
         })
 
-        //  save... workaround for -> https://github.com/bobvanderlinden/probot-auto-merge/pull/246
-        my_context = context  // save payload
-        installation_id = my_context.payload.installation.id // save id
-        my_app = app // save app
-        //-----------------------------------------------------------------------------------------
-
         app.log('push event fired')
         app.log(context.payload)
 
+        my_context = context
+        installation_id = context.payload.installation.id
     })
 
 // post back to GitHUB
@@ -59,31 +51,17 @@ module.exports = app => {
     // create application/json parser
     var jsonParser = bodyParser.json()
 
-    router.post('/app', jsonParser,async function (req, res) {
+    const asyncHandler = require('express-async-handler')
+
+    router.post('/app', jsonParser, asyncHandler(async (req, res, next) => {
 
     // getting expired credential 
 
     //the token used in `context.github` expires after 59 minutes and Probot caches it. 
     //Since you have `context.payload.installation.id`, you can reauthenticate the client with:
 
-    const log = my_app.log
-
-    my_app.auth(installation_id,log)   // re-authenticate... testar...!
-
-// tror man måste spara...skapa githubAPI ..va är det??
-
-
-console.log("some keep-aliveeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-
-    console.log(app.auth(installation_id)) 
-
-console.log("---------------------------------")
-console.log(my_context.payload.installation.id)
-
-console.log(log)
-console.log("..................................")
-
-
+    const log = app.log
+    const my_github = await app.auth(installation_id,log) // re-authenticate...
 
         var jsonQ = require('jsonq')
         var glob = require('glob')
@@ -100,7 +78,7 @@ console.log("..................................")
 
                 console.log(jsonfile)
 
-// skriva metoder som.. läser från fil.
+         // skriva metoder som.. läser från fil.     
 ///////////////////////////////////////
                 const fs = require('fs')
 
@@ -115,11 +93,7 @@ console.log("..................................")
                 for(var i = 0; i < allmethods.length; i++)
                 {
                     var obj = allmethods[i];
-
-//                    console.log(obj.classification);
-
                     temp.push(obj.package)
-
                 }
 
                 var uniqueItems = Array.from(new Set(temp))
@@ -135,7 +109,9 @@ console.log("..................................")
                         "tested": 0,
                         "notcovered": 0,
                         "partiallytested": 0,
-                        "links": []
+                        "pseudotested": 0,
+                        "partiallytested_links": [],
+                        "pseudotested_links": []
                     };
 
                     array_all.push(jsonObj_child)
@@ -147,7 +123,6 @@ console.log("..................................")
                     var obj = allmethods[i];
 
   //                  console.log(obj.package);
-  //                  console.log(obj.classification);
 
                     array_all.forEach(function(entry) {
 
@@ -173,8 +148,25 @@ console.log("..................................")
                                 
                                var myObj = {[linkstring]: link};
 
-                               entry.links.push(myObj);
+                               entry.partiallytested_links.push(myObj);
                                //   "linkstring" : "https://github.com/" //+ owner + "/"+ repo + "/blob/{commit}/src/main/java/{method.package}/{filename}#L{linenumber}"
+                            }
+                            if (obj.classification === 'pseudo-tested')
+                            {
+                               entry.pseudotested = entry.pseudotested + 1
+
+                               var linkstring = "link " + entry.pseudotested
+
+                             //  var link = "https://github.com/martinch-kth/commons-codec/tree/trunk/src/main/java/"+ obj.package +"/"+ obj['file-name'] +"#L"+ obj['line-n$
+
+                               var branchName = String(my_context.payload.ref).split('/').pop();
+
+                               var link = "https://github.com/"+ my_context.payload.repository.full_name +"/blob/" + branchName +"/src/main/java/"+ obj.package +"/"+ obj['file-name'] +"#L"+ obj['line-number']
+
+
+                               var myObj = {[linkstring]: link};
+
+                               entry.pseudotested_links.push(myObj);
                             }
                             if (obj.classification === 'not-covered' )
                             {
@@ -190,16 +182,19 @@ console.log("..................................")
                 var methods_total = allmethods.length
                 var tested_total = 0
                 var partially_tested_total = 0
+                var pseudo_tested_total = 0
                 var non_covered_total = 0
 
                 array_all.forEach(function(i, idx, array){
 
                  tested_total += i.tested
                  partially_tested_total += i.partiallytested
+                 pseudo_tested_total += i.pseudotested
                  non_covered_total += i.notcovered
                 });
 
                 var packages_partially_tested = '{'
+                var packages_pseudo_tested = '{'
 
                 var treemap='{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":['
                 var result= '{'
@@ -208,7 +203,8 @@ console.log("..................................")
 
                     var result_package = '"package ' + String(idx)+ '": "' + String(i.name) + '  Tested: ' + String(i.tested) + '  Partially tested: ' + String(i.partiallytested) + '  Not covered: ' + String(i.notcovered) + '"'
 
-                    var result_partially_tested = '"'+ String(i.name) +'" : ' + JSON.stringify(i.links)
+                    var result_partially_tested = '"'+ String(i.name) +'" : ' + JSON.stringify(i.partiallytested_links)
+                    var result_pseudo_tested = '"'+ String(i.name) +'" : ' + JSON.stringify(i.pseudotested_links)
 
                     var pacpac='{"name":"' + String(i.name) +'","color":"hsl(87, 70%, 50%)","children":[' +
 
@@ -233,6 +229,8 @@ console.log("..................................")
                         result = result + result_package
 
                         packages_partially_tested = packages_partially_tested + result_partially_tested
+                        packages_pseudo_tested = packages_pseudo_tested + result_pseudo_tested
+
                     }
                     else
                     {
@@ -240,6 +238,8 @@ console.log("..................................")
                         result = result + result_package + result_tail
 
                         packages_partially_tested = packages_partially_tested + result_partially_tested + result_tail
+                        packages_pseudo_tested = packages_pseudo_tested + result_pseudo_tested + result_tail
+
                     }
                 });
 
@@ -251,29 +251,25 @@ console.log("..................................")
 		result = result + close_result
 
                 packages_partially_tested = packages_partially_tested + close_result
+                packages_pseudo_tested = packages_pseudo_tested + close_result
 
-///// JUST CHECKING ////////////////////////////////////////
-var isJSON = require('is-valid-json');
+           ///// JUST CHECKING ////////////////////////////////////////
+           var isJSON = require('is-valid-json');
 
-// "obj" can be {},{"foo":"bar"},2,"2",true,false,null,undefined, etc.
-// var obj = "any JS literal here";
+           // "obj" can be {},{"foo":"bar"},2,"2",true,false,null,undefined, etc.
+           // var obj = "any JS literal here";
 
-if( isJSON(result) ){
+           if( isJSON(result) ){
 
-    // Valid JSON, do something
-    console.log(result)
-}
-else{
+           // Valid JSON, do something
+          console.log(result)
+          }
+          else{
 
-    // not a valid JSON, show friendly error message
-    console.log("not valid JSON")
-
-    console.log(result)
-}
-
-
-
-///////////////////////////////////////////////////////////////////7
+          // not a valid JSON, show friendly error message
+          console.log("not valid JSON")
+          console.log(result)
+          }
 
                 // jenkins parsing
                 //    let jenkins_json = JSON.stringify(req.body) // jenkins info...
@@ -290,13 +286,29 @@ else{
                 console.log('jenk_:'+ jenkins_info)
                 console.log('jenk_status:'+ jenkins_status)
 
-                var stat = new Stats({ commit_id: my_context.payload.head_commit.id, date: new Date,username: my_context.payload.head_commit.author.username,repository:my_context.payload.repository.name, packages_partially_tested: packages_partially_tested , commit_url: my_context.payload.head_commit.url ,treemap : treemap, methods_total: methods_total ,tested_total: tested_total, partially_tested_total: partially_tested_total , non_covered_total: non_covered_total });
+                var stat = new Stats({ commit_id: my_context.payload.head_commit.id, 
+                                       date: new Date,
+                                       username: my_context.payload.head_commit.author.username,
+                                       repository:my_context.payload.repository.name, 
+                                       packages_partially_tested: packages_partially_tested , 
+
+				       // NEW
+                                       packages_pseudo_tested: packages_pseudo_tested , 
+
+                                       commit_url: my_context.payload.head_commit.url ,
+                                       treemap : treemap, 
+                                       methods_total: methods_total ,
+                                       tested_total: tested_total, 
+                                       partially_tested_total: partially_tested_total , 
+
+                                       // NEW
+                                       pseudo_tested_total : pseudo_tested_total,
+
+                                       non_covered_total: non_covered_total });
 
                 stat.save(function (err, somestat) {
                     if (err) return console.error(err);
                 });
-
-                console.log('id:'+my_context.payload.head_commit.id)
 
                 const commitstatus = my_context.repo({
 
@@ -309,10 +321,11 @@ else{
                     state: jenkins_status
                 })
 
-                return my_context.github.repos.createStatus(commitstatus)
+             //   return my_context.github.repos.createStatus(commitstatus)
+                res.send(my_github.repos.createStatus(commitstatus))
             }
-        })
-    })
+        })     
+    }))
 
 }
 

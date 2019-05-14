@@ -317,7 +317,7 @@ module.exports = app => {
                     sha: my_context.payload.head_commit.id,
                     description: jenkins_info,
                     context: 'CI/jenkins',
-                    target_url: 'http://130.237.59.170:3002/' + my_context.payload.head_commit.id ,
+                    target_url: 'http://130.237.59.170:3001/' + my_context.payload.head_commit.id ,
                     state: jenkins_status
                 })
 

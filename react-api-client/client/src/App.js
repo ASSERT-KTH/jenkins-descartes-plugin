@@ -41,9 +41,10 @@ class App extends Component {
         this.state = {
 
             commit_data : {commit_id: "57a288746b9e67dead9ef1d6788620bd6f8184ae", date: new Date("2019-03-05T21:23:23.446Z"),username: "martinch-kth",
-                           repository:"commons-codec", packages_partially_tested: '{"pack":[{"link":"http://some/somelink"}]}' ,
+                           repository:"commons-codec", packages_partially_tested: '{"pack":[{"link":"http://some/somelink"}]}',
+                           packages_pseudo_tested: '{"pack":[{"link":"http://some/somelink"}]}' ,
                            commit_url: "http://github/somecommit_url" , treemap : mystring,
-                           methods_total: "33",tested_total: "22", partially_tested_total: "22", non_covered_total: "22"},
+                           methods_total: "33",tested_total: "22", partially_tested_total: "22",pseudo_tested_total:"22", non_covered_total: "22"},
 
             modalIsOpen: false,
             modalName : "Modal",
@@ -63,28 +64,9 @@ class App extends Component {
         this.callAPI();
     }
 
-
-    /*
-        componentDidMount(){
-
-            axios.get(`/` + window.location.pathname)
-                .then(({ data }) => {
-                    const  commit_data  = data;
-
-                    console.log(commit_data)
-
-                    this.setState({
-                        commit_data : data,
-                    });
-                });
-        }
-    */
-
     openModal(e) {
 
         console.log(e)
-
-
         var test_data = {
             "org/apache/commons/codec/digest": [
                 {
@@ -163,12 +145,9 @@ class App extends Component {
  
             console.log(packname)
 
-            //    var arr = some_data[packname]
             var arr = some_data[packname]
 
-        
-
-            // fel men,,, vet ej hur..empty model array..
+            // change to setState...
             this.state.modal_items = []
 
             for (var i = 0; i < arr.length; i++){
@@ -229,17 +208,17 @@ class App extends Component {
 
                 <Grid.Row>
                     <Grid.Column  width={9}>
-                        <Grid columns={4} stackable>
+                        <Grid columns={5} stackable>
                             <Grid.Column>
                                 <Segment raised>
-                                    <Statistic value={this.state.commit_data.methods_total} label="Total Methods" size="small" color="black" />
+                                    <Statistic value={this.state.commit_data.methods_total} label="Total Methods" size="tiny" color="black" />
                                 </Segment>
                             </Grid.Column>
 
                             <Grid.Column>
                                 <Segment raised>
                                     <Statistic>
-                                        <Statistic value={this.state.commit_data.tested_total} label="tested" size="small" color="teal" />
+                                        <Statistic value={this.state.commit_data.tested_total} label="tested" size="tiny" color="teal" />
                                     </Statistic>
                                 </Segment>
                             </Grid.Column>
@@ -247,7 +226,7 @@ class App extends Component {
                             <Grid.Column>
                                 <Segment raised>
                                     <Statistic>
-                                        <Statistic value={this.state.commit_data.partially_tested_total} label="Partially tested" size="small" color="yellow" />
+                                        <Statistic value={this.state.commit_data.partially_tested_total} label="Partially tested" size="tiny" color="yellow" />
                                     </Statistic>
                                 </Segment>
                             </Grid.Column>
@@ -255,7 +234,15 @@ class App extends Component {
                             <Grid.Column>
                                 <Segment raised>
                                     <Statistic>
-                                        <Statistic value={this.state.commit_data.non_covered_total} label="non-covered" size="small" color="orange" />
+                                        <Statistic value={this.state.commit_data.pseudo_tested_total} label="Pseudo tested" size="tiny" color="grey" />
+                                    </Statistic>
+                                </Segment>
+                            </Grid.Column>
+
+                            <Grid.Column>
+                                <Segment raised>
+                                    <Statistic>
+                                        <Statistic value={this.state.commit_data.non_covered_total} label="non-covered" size="tiny" color="orange" />
                                     </Statistic>
                                 </Segment>
                             </Grid.Column>
@@ -266,7 +253,7 @@ class App extends Component {
 
                 <Grid.Row>
                     <Grid.Column width={9}>
-                        <Segment raised><a href={this.state.commit_data.commit_url}>Link to GitHub commit!</a> </Segment>
+                        <Segment raised>Repository: {this.state.commit_data.repository} <a href={this.state.commit_data.commit_url}> - Link to GitHub commit.</a> </Segment>
                     </Grid.Column>
                 </Grid.Row>
 
@@ -281,7 +268,7 @@ class App extends Component {
                                 identity="name"
                                 value="loc"
                                 innerPadding={0}
-                                outerPadding={1}
+                                outerPadding={3}
 
                                 label="loc"
                                 labelFormat="0"

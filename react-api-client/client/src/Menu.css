@@ -8,3 +8,8 @@
     color: azure !important;
     background: rgba(255, 255, 255, 0.13);
 }
+
+h1.myh1 {
+  color: white !important;
+}
+

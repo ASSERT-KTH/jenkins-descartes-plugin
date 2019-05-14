@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import Treeview from './Treeview'
-
+import Pseudoview from './Pseudoview'
 // lagg in sen ... import Jsonresult from './Jsonresult'
 
 import Menu from './Menu';
@@ -23,6 +23,7 @@ import Calendar from "./Calendar";
 const panes = [
     { menuItem: 'Commit Result', render: () => <Tab.Pane> <App/> </Tab.Pane> },
     { menuItem: 'Partially Tested', render: () => <Tab.Pane> <Treeview/> </Tab.Pane> },
+    { menuItem: 'Pseudo Tested', render: () => <Tab.Pane> <Pseudoview/> </Tab.Pane> },
     { menuItem: 'Historical Results', render: () => <Tab.Pane><Calendar/></Tab.Pane> },
 ]
 

@@ -11,8 +11,6 @@ import { ResponsiveTreeMapHtml } from '@nivo/treemap'
 import axios from 'axios';
 import round from "./round";
 
-
-
 const customStyles = {
     content : {
         top                   : '50%',
@@ -189,7 +187,6 @@ class App extends Component {
         return (
 
             <Grid>
-
                 <div>
                     <Modal
                         isOpen={this.state.modalIsOpen}
@@ -205,62 +202,37 @@ class App extends Component {
                         <button onClick={this.closeModal}>close</button>
                     </Modal>
                 </div>
-
+             <Grid.Row>
+               <Grid.Column width={13}> 
+		<div class="ui horizontal segments">
+		   <div class="ui segment">
+		     <Statistic value={this.state.commit_data.methods_total} label="Total Methods" size="small" color="black" />
+		   </div>
+		 <div class="ui segment">
+		     <Statistic value={this.state.commit_data.tested_total} label="tested" size="small" color="teal" />
+ 		 </div>
+  		 <div class="ui segment">
+ 		     <Statistic value={this.state.commit_data.partially_tested_total} label="Partially tested" size="small" color="yellow" />
+  		 </div>
+  		  <div class="ui segment">
+         	     <Statistic value={this.state.commit_data.pseudo_tested_total} label="Pseudo tested" size="small" color="grey" />
+ 	          </div>
+	          <div class="ui segment">
+                   <Statistic value={this.state.commit_data.non_covered_total} label="non-covered" size="small" color="orange" />
+		  </div>
+	  	 </div> 
+               </Grid.Column>
+              </Grid.Row>
+ 
                 <Grid.Row>
-                    <Grid.Column  width={9}>
-                        <Grid columns={5} stackable>
-                            <Grid.Column>
-                                <Segment raised>
-                                    <Statistic value={this.state.commit_data.methods_total} label="Total Methods" size="tiny" color="black" />
-                                </Segment>
-                            </Grid.Column>
+                 <Grid.Column width={13}>                  
+                    <Segment raised>Repository: {this.state.commit_data.repository} <a href={this.state.commit_data.commit_url}> - Link to GitHub commit.</a> </Segment>   
+                 </Grid.Column>
+                </Grid.Row>               
 
-                            <Grid.Column>
-                                <Segment raised>
-                                    <Statistic>
-                                        <Statistic value={this.state.commit_data.tested_total} label="tested" size="tiny" color="teal" />
-                                    </Statistic>
-                                </Segment>
-                            </Grid.Column>
-
-                            <Grid.Column>
-                                <Segment raised>
-                                    <Statistic>
-                                        <Statistic value={this.state.commit_data.partially_tested_total} label="Partially tested" size="tiny" color="yellow" />
-                                    </Statistic>
-                                </Segment>
-                            </Grid.Column>
-
-                            <Grid.Column>
-                                <Segment raised>
-                                    <Statistic>
-                                        <Statistic value={this.state.commit_data.pseudo_tested_total} label="Pseudo tested" size="tiny" color="grey" />
-                                    </Statistic>
-                                </Segment>
-                            </Grid.Column>
-
-                            <Grid.Column>
-                                <Segment raised>
-                                    <Statistic>
-                                        <Statistic value={this.state.commit_data.non_covered_total} label="non-covered" size="tiny" color="orange" />
-                                    </Statistic>
-                                </Segment>
-                            </Grid.Column>
-                        </Grid>
-                    </Grid.Column>
-
-                </Grid.Row>
-
-                <Grid.Row>
-                    <Grid.Column width={9}>
-                        <Segment raised>Repository: {this.state.commit_data.repository} <a href={this.state.commit_data.commit_url}> - Link to GitHub commit.</a> </Segment>
-                    </Grid.Column>
-                </Grid.Row>
-
-
-                <Grid.Row>
-                    <Grid.Column>
-                        <div className="chart">
+                <Grid.Row >
+                <Grid.Column width={13}>                 
+                 <div className="chart">
                             <ResponsiveTreeMapHtml
                                 onClick={(e) => this.openModal(e)}
                                // root={{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":[{"name":"org/apache/commons/codec/digest","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":106},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 44}]},{"name":"org/apache/commons/codec/language","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":100},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 5},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 3}]},{"name":"org/apache/commons/codec/binary","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":98},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 1}]},{"name":"org/apache/commons/codec/net","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":57},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]},{"name":"org/apache/commons/codec/language/bm","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":51},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 5}]},{"name":"org/apache/commons/codec/cli","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":0},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 8}]},{"name":"org/apache/commons/codec","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":3},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]}]}}
@@ -282,8 +254,8 @@ class App extends Component {
                                 motionStiffness={90}
                                 motionDamping={11}
                             />
-                        </div>
-                    </Grid.Column>
+                      </div>
+                 </Grid.Column>
                 </Grid.Row>
             </Grid>
         )

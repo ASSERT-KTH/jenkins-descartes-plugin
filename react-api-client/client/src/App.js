@@ -208,8 +208,28 @@ class App extends Component {
         this.setState({modalIsOpen: false});
     }
 
+    closeModal_details_button() {
+        this.setState({modalIsOpen: false});
+      // your axios call here
+
+      localStorage.setItem("pageData", "Data Retrieved from axios request")
+      // route to new page by changing window.location
+      window.open("https://www.ebay.com", "_blank") //to open new page
+    }
 
 
+
+/*
+In your RaisedInvoice.jsx, retrieve the data from Local Storage like this,
+
+componentWillMount() {
+  localStorage.pagedata= "your Data";
+  // set the data in state and use it through the component
+  localStorage.removeItem("pagedata");
+  // removing the data from localStorage.  Since if user clicks for another invoice it overrides this data
+}
+
+*/
 
     render() {
 
@@ -230,7 +250,7 @@ class App extends Component {
                         <ul>
                             {this.state.modal_items}
                         </ul>
-                        <button onClick={this.closeModal}>close</button>
+                        <button onClick={this.closeModal}>Close</button><button onClick={this.closeModal_details_button}>Details</button>
                     </Modal>
                 </div>
              <Grid.Row>

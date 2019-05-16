@@ -78,8 +78,7 @@ module.exports = app => {
 
                 console.log(jsonfile)
 
-         // skriva metoder som.. läser från fil.     
-///////////////////////////////////////
+                // TODO -skriva metoder som.. läser från fil.     
                 const fs = require('fs')
 
                 let rawdata = fs.readFileSync(jsonfile)
@@ -88,8 +87,7 @@ module.exports = app => {
                 var allmethods = methodsjson.methods
 
                 var temp = []
-// loop all methods..
-
+                // loop all methods..
                 for(var i = 0; i < allmethods.length; i++)
                 {
                     var obj = allmethods[i];
@@ -214,6 +212,9 @@ module.exports = app => {
                         '},{"name":"Partially tested",' +
                         '"color": "hsl(53, 100%, 50%)",' +
                         '"loc": ' + i.partiallytested +
+                        '},{"name":"Pseudo tested",' +
+                        '"color": "hsl(0, 0%, 50%)",' +
+                        '"loc": ' + i.pseudotested +
                         '},{"name": "Not covered",' +
                         '"color": "hsl(348, 100%, 50%)",' +
                         '\"loc\": ' + i.notcovered

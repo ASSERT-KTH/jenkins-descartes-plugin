@@ -133,7 +133,9 @@ class App extends Component {
 
         console.log(this.state.commit_data.packages_partially_tested)
 
-        var some_data = JSON.parse(this.state.commit_data.packages_partially_tested)  
+        var partially_tested_data = JSON.parse(this.state.commit_data.packages_partially_tested)  
+        var pseudo_tested_data = JSON.parse(this.state.commit_data.packages_pseudo_tested)
+
 
         if (e.id === "Partially tested")
         {
@@ -143,7 +145,7 @@ class App extends Component {
  
             console.log(packname)
 
-            var arr = some_data[packname]
+            var arr = partially_tested_data[packname]
 
             // change to setState...
             this.state.modal_items = []
@@ -160,12 +162,41 @@ class App extends Component {
                     this.state.modal_items.push(<li key={attrValue}><a href={attrValue}>{lastPart}</a></li>)
                 }
             }
-
             //real way ->  this.state.setState({modalName : packname})
             this.state.modalName = packname
             this.setState({modalIsOpen: true});
         }
+        if (e.id === "Pseudo tested")
+        {
+            console.log("pseudo Tested!!!!")
 
+            var packname = e.parent.id
+ 
+            console.log(packname)
+
+            var arr = pseudo_tested_data[packname]
+
+            // change to setState...
+            this.state.modal_items = []
+
+            for (var i = 0; i < arr.length; i++){
+                var obj = arr[i];
+                for (var key in obj){
+                    var attrName = key;
+                    var attrValue = obj[key];
+
+                    var lastPart = attrValue.split("/").pop();
+
+                    console.log(attrValue)
+                    this.state.modal_items.push(<li key={attrValue}><a href={attrValue}>{lastPart}</a></li>)
+                }
+            }
+            //real way ->  this.state.setState({modalName : packname})
+            this.state.modalName = packname
+            this.setState({modalIsOpen: true});
+
+
+           }
     }
 
     afterOpenModal() {

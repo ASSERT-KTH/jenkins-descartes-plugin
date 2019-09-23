@@ -70,8 +70,8 @@ class App extends Component {
     }
 
     callAPI() {
-    //  fetch("http://130.237.59.170:3002/users" + window.location.pathname)
-        fetch("http://localhost:3001/users" + window.location.pathname)
+          fetch("http://130.237.59.170:3002/users" + window.location.pathname)
+    //    fetch("http://localhost:3001/users" + window.location.pathname)
             .then(res => res.json())
             .then(res => this.setState({ commit_data: res
 

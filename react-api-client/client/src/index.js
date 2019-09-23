@@ -1,48 +1,172 @@
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import HeaderMenu from "./HeaderMenu";
+import Footer from "./Footer";
+import styled from "styled-components";
+
+import { Tab,Grid,Divider, Container } from "semantic-ui-react";
+import 'semantic-ui-css/semantic.min.css';
+
+import App from './App';
+import Treeview from './Treeview'
+import Pseudoview from './Pseudoview'
+import Calendar from "./Calendar";
+import MyMenu from './MyMenu';
+import Testview from "./Testview";
+
+import './index.css';
+import Timelinesview from "./Timelinesview";
+
+const Commitresults = () => <App/>;
+const Tree = () => <Treeview/>;
+const Pseudo = () => <Pseudoview/>;
+const Cal = () => <Calendar/>;
+const Time = () => <Timelinesview/>;
+
+
+
+const Wrapper = styled.div`
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  margin-left: 1em;
+  margin-right: 1em;
+`;
+const Content = styled(Container)`
+
+  flex: 3;
+padding: 1em;
+
+ 
+`;
+
+ReactDOM.render(
+    <Router>
+        <Wrapper>
+        <MyMenu/>
+            <Content>
+        <Grid>
+            <Grid.Column width={1} floated='left'>
+                <HeaderMenu
+                    onItemClick={item => this.onItemClick(item)}
+                    items={[
+                        ["Commit Results", "/"],  // + commit-id som kommer in...
+                        ["Partially Tested", "/partiallytested"],
+                        ["Pseudo Tested", "/pseudotested"],
+                        ["Historical Results", "/historicalresults"],
+                        ["Timelines Result", "/timelines"]
+                    //    ["Wrong url", "/wrongurl"]
+                    ]}
+                    // headerIcon={"file code outline"}      //      <Route component={MissingPage} />
+
+                    //
+                    // Using a switch ..with the last component set to default is a bad way to make things work.. debt...
+                />
+            </Grid.Column>
+
+            <Grid.Column width={12}>
+
+                    <Switch>
+                        <Route path="/partiallytested" component={Tree} />
+                        <Route path="/pseudotested" component={Pseudo} />
+                        <Route path="/historicalresults" component={Cal} />
+                        <Route path="/testview/:id" component={Testview}/>
+                        <Route path="/timelines" component={Time} />
+                        <Route path="/" component={Commitresults} />
+                    </Switch>
+
+            </Grid.Column>
+        </Grid>
+            </Content>
+        <Footer />
+      </Wrapper>
+    </Router>,
+    document.getElementById("root")
+);
+
+
+
+/*
+
 import React, {Fragment} from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import HeaderMenu from "./HeaderMenu";
+import Footer from "./Footer";
+import styled from "styled-components";
+import { Tab,Grid,Divider, Container } from "semantic-ui-react";
+
 import './index.css';
 import App from './App';
 import Treeview from './Treeview'
 import Pseudoview from './Pseudoview'
-// lagg in sen ... import Jsonresult from './Jsonresult'
-
-import Menu from './Menu';
+import Calendar from "./Calendar";
+import MyMenu from './MyMenu';
 
 import * as serviceWorker from './serviceWorker';
-
 import registerServiceWorker from './registerServiceWorker';
 
 import 'semantic-ui-css/semantic.min.css';
 
-import {Tab, Container, Grid} from 'semantic-ui-react';
-import Calendar from "./Calendar";
+// vill ha commit id tillgängligt för alla componenter... i guess!!!...åå..baby skriker...
+const commit_id = window.location.pathname
 
-//import { BrowserRouter as Router } from 'react-router-dom';
+const Commitresults = () => <App/>;
+const Tree = () => <Footer/>;
+const Pseudo = () => <Pseudoview/>;
+const Cal = () => <Calendar/>;
+const MissingPage = () => <h1>URL doesn't exist</h1>;
+
+const Wrapper = styled.div`
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+`;
+const Content = styled(Container)`
+  margin-top: 6em
+  flex: 1;
+`;
+
+ReactDOM.render(
+    <Router>
+
+            <MyMenu/>
+
+                <Grid>
+                    <Grid.Column width={2} floated='right'>
+                            <HeaderMenu
+                                onItemClick={item => this.onItemClick(item)}
+                                items={[
+                                    ["Commit Results", "/"],
+                                    ["Partially Tested", "/partiallytested"],
+                                    ["Pseudo Tested", "/pseudotested"],
+                                    ["Historical Results", "/historicalresults"],
+                                    ["Wrong url", "/wrongurl"]
+                                ]}
+                                headerIcon={"compass outline"}
+                            />
+                        </Grid.Column>
+
+                    <Grid.Column width={12}>
+                      <Content>
+                                <Switch>
+                                    <Route path="/" component={Commitresults} />
+                                    <Route exact path="/partiallytested" component={Tree} />
+                                    <Route path="/pseudotested" component={Pseudo} />
+                                    <Route path="/historicalresults" component={Cal} />
+                                    <Route component={MissingPage} />
+                                </Switch>
+                      </Content>
+                    </Grid.Column>
+                </Grid>
 
 
-const panes = [
-    { menuItem: 'Commit Result', render: () => <Tab.Pane> <App/> </Tab.Pane> },
-    { menuItem: 'Partially Tested', render: () => <Tab.Pane> <Treeview/> </Tab.Pane> },
-    { menuItem: 'Pseudo Tested', render: () => <Tab.Pane> <Pseudoview/> </Tab.Pane> },
-    { menuItem: 'Historical Results', render: () => <Tab.Pane><Calendar/></Tab.Pane> },
-]
+            <Footer />
+
+    </Router>,
+    document.getElementById("root")
+);
 
 
-
-ReactDOM.render(<Fragment><Container fluid >
-
-    <Menu/>
-
-    <Tab menu={{ fluid: false, vertical: true, tabular: false }} panes={panes} grid={{paneWidth:14,tabWidth:2}} />
-
-    </Container></Fragment>, document.getElementById('root'));
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: http://bit.ly/CRA-PWA
-
-serviceWorker.unregister();
-
-
-
-//registerServiceWorker();
+*/

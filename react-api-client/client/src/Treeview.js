@@ -27,13 +27,14 @@ class Treeview extends Component {
             data_loaded : false
         };
 
-        this.printTreeview = this.printTreeview.bind(this);        
+        this.printTreeview = this.printTreeview.bind(this);
     }
 
     callAPI() {
-         fetch("http://130.237.59.170:3002/users" + window.location.pathname)
+         fetch("http://localhost:3001/users/af452b82090ad9cfbdab88afc3eccc64f81610c3") // fake it...   window.location.pathname)
             .then(res => res.json())
-            .then(res => this.setState({ commit_data: res,
+            .then(res => this.setState({
+                                         commit_data: res,
                                          data_loaded: true
             })).catch(err => err)
     }
@@ -55,32 +56,62 @@ class Treeview extends Component {
            Object.keys(data).forEach(function(key) {
 
            if (data[key].length)
-              {    
+              {
                // få array med alla länkar för det paketet
                var arr = data[key]
                this.state.treeview_items.push(<Header className='myHeader' as='h3'>{key}</Header>) // få in paketnamn..
-    
 
-            for (var i = 0; i < arr.length; i++){ 
+
+            for (var i = 0; i < arr.length; i++){
                 var obj = arr[i];
+
                 for (var key in obj){
                     var attrName = key;
                     var attrValue = obj[key];
 
-                    // jag behöver inte... detta längre.. tror ja vill  ha hela..
-                 //   var lastPart = attrValue.split("/").pop();
+                    if (String(attrName).indexOf('link') > -1) // if key contains 'link' .. 1..2..
+                    {
+                        var lastPart = attrValue.split("/").pop();
 
-                  //  console.log(attrValue)
-                //    console.log(this.state.treeview_items)
-                    this.state.treeview_items.push(<p className="mylinks"><a href={attrValue}>{attrValue}</a></p>)
+                      //  console.log(attrValue)
+                        this.state.treeview_items.push(<p className="mymethod"><a href={attrValue}>{lastPart}</a></p>)
+                    }
+                    if (String(key).indexOf('test') > -1) // if key contains 'link' .. 1..2..
+                    {
+                        console.log(attrValue)  // här kommer en array!!
 
-      //              var newStateArray = this.state.treeview_items.slice();
-      //              newStateArray.push(<li key={attrValue}><a href={attrValue}>{lastPart}</a></li>);
-      //              this.setState({treeview_items : newStateArray});
+                        let map = new Map();
+
+                        // var arrayLength = attrValue.length;
+                        for (var j = 0; j < attrValue.length; j++) {
+                            // console.log(attrValue[j]);
+                            //Do something
+                            var lastPart_test = attrValue[j].split(".").pop().slice(0, -1);
+
+                            // if map does not contain ...lastpart..
+                            if (!map.has(lastPart_test))
+                            {
+                                console.log("map 1....")
+                                map.set(lastPart_test, 1);
+                            }
+                            else
+                            {
+                                console.log("map +1....")
+                                map.set(lastPart_test, (map.get(lastPart_test))+1);
+                            }
+                        }
+
+                        for (const [key, value] of map.entries()) {
+                            console.log(key, value);
+
+                            this.state.treeview_items.push(<p className="mytest">{key + " " + value}</p>)
+                        }
+
+                    }
                 }
             } //for....
-           }  //if      
-          }.bind(this));           
+           }  //if
+          }.bind(this));
 
      // console.log(this.state.treeview_items)
 
@@ -92,8 +123,8 @@ class Treeview extends Component {
         if (this.state.data_loaded === false) {
             return null;
         }
-   
-        this.printTreeview(); 
+
+        this.printTreeview();
 
     return (
 
@@ -105,14 +136,12 @@ class Treeview extends Component {
                       </Header>
                   </Grid.Column>
                 </Grid.Row>
-    
-        <div> 
 
-          {this.state.treeview_items.map(item => (
-                                     <div>{item}</div>
-                                   ))}
-
-        </div>
+            <Grid.Column width={9}>
+                {this.state.treeview_items.map(item => (
+                    <div>{item}</div>
+                ))}
+            </Grid.Column>
 
      </Grid>
 

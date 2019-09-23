@@ -7,7 +7,6 @@ import axios from 'axios';
 import {Segment, Grid, Header } from 'semantic-ui-react'
 
 
-
 class Calendar extends Component {
 
     constructor(props) {
@@ -66,9 +65,7 @@ class Calendar extends Component {
                     this.setState({
                         data : data,
                         data_loaded : true
-
                     });
-
                 });
 
     }
@@ -96,7 +93,7 @@ class Calendar extends Component {
                           Evolution of Partially Tested Methods Over Time
                       </Header>
                   </Grid.Column>
-                </Grid.Row>                
+                </Grid.Row>
 
             <CalendarHeatmap
                 data={this.state.data}

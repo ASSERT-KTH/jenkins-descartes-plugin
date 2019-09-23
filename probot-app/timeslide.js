@@ -185,7 +185,7 @@ glob("../../../../../var/lib/jenkins/workspace/test/target/pit-reports/*/methods
         var my_jsonfile = files.slice(-1).pop()
 
         // do once...
-        var timeslide_file_DATA = createTimeslideData(my_jsonfile, new Date())// "2019-10-29T09:55:09.856Z")
+        var timeslide_file_DATA = createTimeslideData(my_jsonfile,  "2019-09-24T01:55:09.856Z")
         update_timeslide_DB(timeslide_file_DATA)
     }
 })

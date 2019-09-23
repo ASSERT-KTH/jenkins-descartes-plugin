@@ -13,8 +13,8 @@ export default () => (
         />
       </Menu.Item>
 
-      <Menu color="white" widths={3} position="left">
-        <h1 class="myh1">Dashboard</h1>
+      <Menu color="grey" widths={3} position="left">
+        <h1 className="myh1">Dashboard</h1>
       </Menu>
 
       <Menu.Menu position="right">

@@ -9,7 +9,7 @@ import './App.css';
 
 import { ResponsiveTreeMapHtml } from '@nivo/treemap'
 
-var percentage = require('percentage-calc');
+//var percentage = require('percentage-calc');
 
 const customStyles = {
     content : {

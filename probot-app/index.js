@@ -9,9 +9,9 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
  // we're connected!
     console.log('db connected...')
-});			
+});
 
-// SAVE for re-authentication 
+// SAVE for re-authentication
 var my_context
 
 module.exports = app => {
@@ -27,7 +27,12 @@ module.exports = app => {
        console.log(context.payload.repository.name)
        console.log("------------------------------------------------------------------------------")
 
+        jenkins.job.build({name: 'test', parameters: { commitid: context.payload.head_commit.id } }, function(err) {
+            if (err) throw err;
+        });
 
+        // if we in the future need alter jenkins jobs..
+       /*
        if (context.payload.repository.name === "testaaaaaaaaaaaaaa")
        {
            jenkins.job.build({name: 'test-dhell' }, function(err) {
@@ -35,14 +40,14 @@ module.exports = app => {
             });
             console.log("well done yoda MASTER!")
        }
-       else 
+       else
        {
            console.log("---------------------should not be seeeeeeeeeeeeeeeeeen...................................")
            jenkins.job.build({name: 'test-dhell', parameters: { commitid: context.payload.head_commit.id } }, function(err) {
            if (err) throw err;
            });
        }
-
+       */
 
         app.log('push event fired')
         app.log(context.payload)
@@ -70,10 +75,10 @@ module.exports = app => {
               // --/  är det...                              , next ... tog bort det...
     router.post('/app', jsonParser, asyncHandler(async (req, res, next) => {
 //      router.post('/app', jsonParser, (req, res) => {
-      
-    // getting expired credential 
 
-    //the token used in `context.github` expires after 59 minutes and Probot caches it. 
+    // getting expired credential
+
+    //the token used in `context.github` expires after 59 minutes and Probot caches it.
     //Since you have `context.payload.installation.id`, you can reauthenticate the client with:
 
     const log = app.log
@@ -82,8 +87,9 @@ module.exports = app => {
         var jsonQ = require('jsonq')
         var glob = require('glob')
 
-        // files is an array of filenames.  .... can get this file some way easy.....
-        glob("../../../../../var/lib/jenkins/workspace/test-dhell/target/pit-reports/*/methods.json", function (err, files) {
+        // files is an array of filenames.  .... can get this file some better way..
+        // *** TODO *** the filepath should be dynamic in the future...
+        glob("../../../../../var/lib/jenkins/workspace/test/target/pit-reports/*/methods.json", function (err, files) {
 
             if (err) {
                 console.log(err)
@@ -94,7 +100,7 @@ module.exports = app => {
 
                 console.log(jsonfile)
 
-                // TODO -skriva metoder som.. läser från fil.     
+                // TODO -skriva metoder som.. läser från fil.
                 const fs = require('fs')
 
                 let rawdata = fs.readFileSync(jsonfile)
@@ -159,7 +165,7 @@ module.exports = app => {
                                var branchName = String(my_context.payload.ref).split('/').pop();
 
                                var link = "https://github.com/"+ my_context.payload.repository.full_name +"/blob/" + branchName +"/src/main/java/"+ obj.package +"/"+ obj['file-name'] +"#L"+ obj['line-number']
-                                
+
                                var myObj = {[linkstring]: link};
 
                                entry.partiallytested_links.push(myObj);
@@ -303,45 +309,45 @@ module.exports = app => {
                 console.log('jenk_:'+ jenkins_info)
                 console.log('jenk_status:'+ jenkins_status)
 
-                var stat = new Stats({ commit_id: my_context.payload.head_commit.id, 
+                var stat = new Stats({ commit_id: my_context.payload.head_commit.id,
                                        date: my_context.payload.head_commit.timestamp,
                                        username: my_context.payload.head_commit.author.username,
-                                       repository:my_context.payload.repository.name, 
-                                       packages_partially_tested: packages_partially_tested , 
+                                       repository:my_context.payload.repository.name,
+                                       packages_partially_tested: packages_partially_tested ,
 
 				       // NEW
-                                       packages_pseudo_tested: packages_pseudo_tested , 
+                                       packages_pseudo_tested: packages_pseudo_tested ,
 
                                        commit_url: my_context.payload.head_commit.url ,
-                                       treemap : treemap, 
+                                       treemap : treemap,
                                        methods_total: methods_total ,
-                                       tested_total: tested_total, 
-                                       partially_tested_total: partially_tested_total , 
+                                       tested_total: tested_total,
+                                       partially_tested_total: partially_tested_total ,
 
                                        // NEW
                                        pseudo_tested_total : pseudo_tested_total,
 
                                        non_covered_total: non_covered_total });
 
- //               stat.save(function (err, somestat) {
- //                 if (err) return console.error(err);
- //               });
+                stat.save(function (err, somestat) {
+                  if (err) return console.error(err);
+                });
 
             const commitstatus = my_context.repo({
-                 
+
                   state : jenkins_status,
                   target_url : 'http://130.237.59.170:3001/' + my_context.payload.head_commit.id ,
                   description : jenkins_info,
                   context : "continuous-integration/jenkins",
                   sha: my_context.payload.head_commit.id,
-                  message : my_context.payload.head_commit.message 
-                   
+                  message : my_context.payload.head_commit.message
+
                 })
 
              //   return my_context.github.repos.createStatus(commitstatus)
                 res.send(my_github.repos.createStatus(commitstatus))
            }
-        })     
+        })
     })    )
 }
 

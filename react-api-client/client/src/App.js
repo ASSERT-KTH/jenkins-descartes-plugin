@@ -85,8 +85,7 @@ class App extends Component {
     componentDidMount() {
         this.callAPI();
 
-        exports.pathname = window.location.pathname;
-        var m = require('./Pseudoview');
+        global.globalString = window.location.pathname
     }
 
     openModal(e) {

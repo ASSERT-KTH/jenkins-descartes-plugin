@@ -11,8 +11,6 @@ import { ResponsiveTreeMapHtml } from '@nivo/treemap'
 
 //var percentage = require('percentage-calc');
 
-global.globalString = "This can be accessed anywhere!";
-
 const customStyles = {
     content : {
         top                   : '50%',
@@ -87,7 +85,7 @@ class App extends Component {
     componentDidMount() {
         this.callAPI();
 
-       // global.globalString = window.location.pathname
+        this.GLOBAL.globalString = window.location.pathname
     }
 
     openModal(e) {

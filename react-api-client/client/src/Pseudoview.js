@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import { Statistic,Grid, Placeholder, Header , Segment } from 'semantic-ui-react'
 
 import './Pseudoview.css';
+import {pathname} from "./App";
 
 class Pseudoview extends Component {
 
@@ -28,7 +29,7 @@ class Pseudoview extends Component {
 
     callAPI() {
      //   fetch("http://localhost:3001/users/af452b82090ad9cfbdab88afc3eccc64f81610c3") // fake it..to run localhost..
-         fetch("http://130.237.59.170:3002/users/" + window.location.pathname)
+         fetch("http://130.237.59.170:3002/users/" + pathname ) // window.location.pathname)
             .then(res => res.json())
             .then(res => this.setState({ commit_data: res,
                                                         data_loaded: true
@@ -36,6 +37,9 @@ class Pseudoview extends Component {
     }
 
     componentDidMount() {
+
+       // var pathname = require('./App').pathname;
+
         this.callAPI();
     }
 

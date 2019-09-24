@@ -11,6 +11,9 @@ import { ResponsiveTreeMapHtml } from '@nivo/treemap'
 
 //var percentage = require('percentage-calc');
 
+exports.pathname = window.location.pathname;
+var m = require('./Pseudoview');
+
 const customStyles = {
     content : {
         top                   : '50%',

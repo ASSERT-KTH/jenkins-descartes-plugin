@@ -32,7 +32,7 @@ class Treeview extends Component {
 
     callAPI() {
        //  fetch("http://localhost:3001/users/af452b82090ad9cfbdab88afc3eccc64f81610c3") // fake it...   window.location.pathname)
-           fetch("http://130.237.59.170:3002/users/" + window.location.pathname)
+           fetch("http://130.237.59.170:3002/users/" + global.globalString  ) //window.location.pathname)
             .then(res => res.json())
             .then(res => this.setState({
                                          commit_data: res,

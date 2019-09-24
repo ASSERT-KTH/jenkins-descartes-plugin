@@ -90,7 +90,8 @@ class App extends Component {
         this.callAPI();
 
         global.globalString = window.location.pathname
-        require('./Pseudoview');
+        require('./Pseudoview');    // needed to reach global var in these modules
+        require('./Treeview');
     }
 
     openModal(e) {

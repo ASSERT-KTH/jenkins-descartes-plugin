@@ -186,6 +186,19 @@ glob("../../../../../var/lib/jenkins/workspace/test/target/pit-reports/*/methods
 
         // do once...
         var timeslide_file_DATA = createTimeslideData(my_jsonfile,  "2019-09-24T01:55:09.856Z")
-        update_timeslide_DB(timeslide_file_DATA)
+     //   update_timeslide_DB(timeslide_file_DATA)
+
+        var stat = new timeslide_db({
+
+            date: new Date(),
+            username: "MartinO",
+            timeslide_all : timeslide_file_DATA
+        });
+
+        stat.save(function (err, somestat) {
+            if (err) return console.error(err);
+        });
+
+
     }
 })

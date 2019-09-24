@@ -75,7 +75,7 @@ class App extends Component {
     }
 
     callAPI() {
-          fetch("http://130.237.59.170:3002/users" + window.location.pathname)
+          fetch("http://130.237.59.170:3002/users" + global.globalString ) //window.location.pathname)
     //    fetch("http://localhost:3001/users" + window.location.pathname)
             .then(res => res.json())
             .then(res => this.setState({
@@ -87,11 +87,13 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.callAPI();
+
 
         global.globalString = window.location.pathname
+        require('./App');  //??? needed??
         require('./Pseudoview');    // needed to reach global var in these modules
         require('./Treeview');
+        this.callAPI();
     }
 
     openModal(e) {

@@ -28,11 +28,10 @@ Modal.setAppElement('#root')
 class App extends Component {
 
 
+    var myurl
 
     constructor(props) {
         super(props);
-
-        global.globalString = ".."
 
         this.openModal = this.openModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -89,11 +88,20 @@ class App extends Component {
     componentDidMount() {
 
 
-        global.globalString = window.location.pathname
+        if (global.globalString){
+
+            this.callAPI();
+        }
+        else
+            {
+
+            global.globalString = window.location.pathname
+        }
+
        // require('./App');  //??? needed??
         require('./Pseudoview');    // needed to reach global var in these modules
         require('./Treeview');
-        this.callAPI();
+
     }
 
     openModal(e) {

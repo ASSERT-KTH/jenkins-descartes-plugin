@@ -85,12 +85,7 @@ class App extends Component {
     componentDidMount() {
 
 
-        if (global.globalString){
-
-            this.callAPI();
-        }
-        else
-            {
+        if (!global.globalString){
 
             global.globalString = window.location.pathname
         }
@@ -98,6 +93,8 @@ class App extends Component {
        // require('./App');  //??? needed??
         require('./Pseudoview');    // needed to reach global var in these modules
         require('./Treeview');
+
+        this.callAPI()
 
     }
 

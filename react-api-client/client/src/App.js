@@ -90,7 +90,7 @@ class App extends Component {
 
 
         global.globalString = window.location.pathname
-        require('./App');  //??? needed??
+       // require('./App');  //??? needed??
         require('./Pseudoview');    // needed to reach global var in these modules
         require('./Treeview');
         this.callAPI();

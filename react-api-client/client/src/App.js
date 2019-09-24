@@ -27,8 +27,12 @@ Modal.setAppElement('#root')
 
 class App extends Component {
 
+
+
     constructor(props) {
         super(props);
+
+        global.globalString = ".."
 
         this.openModal = this.openModal.bind(this);
         this.afterOpenModal = this.afterOpenModal.bind(this);
@@ -85,7 +89,8 @@ class App extends Component {
     componentDidMount() {
         this.callAPI();
 
-        this.GLOBAL.globalString = window.location.pathname
+        global.globalString = window.location.pathname
+        require('./Pseudoview');
     }
 
     openModal(e) {

@@ -192,7 +192,7 @@ glob("../../../../../var/lib/jenkins/workspace/test/target/pit-reports/*/methods
 
             date: new Date(),
             username: "MartinO",
-            timeslide_all : timeslide_file_DATA
+            timeslide_all : JSON.stringify(timeslide_file_DATA)
         });
 
         stat.save(function (err, somestat) {

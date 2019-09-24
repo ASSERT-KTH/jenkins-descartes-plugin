@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Statistic,Grid, Placeholder, Header , Segment } from 'semantic-ui-react'
 
 import './Pseudoview.css';
-import {pathname} from "./App";
+//import {pathname} from "./App";
 
 class Pseudoview extends Component {
 
@@ -27,7 +27,7 @@ class Pseudoview extends Component {
         this.printTreeview = this.printTreeview.bind(this);
     }
 
-    callAPI() {
+    callAPI(pathname) {
      //   fetch("http://localhost:3001/users/af452b82090ad9cfbdab88afc3eccc64f81610c3") // fake it..to run localhost..
          fetch("http://130.237.59.170:3002/users/" + pathname ) // window.location.pathname)
             .then(res => res.json())
@@ -38,9 +38,9 @@ class Pseudoview extends Component {
 
     componentDidMount() {
 
-       // var pathname = require('./App').pathname;
+        var pathname = require('./App').pathname;
 
-        this.callAPI();
+        this.callAPI(pathname);
     }
 
     printTreeview (){

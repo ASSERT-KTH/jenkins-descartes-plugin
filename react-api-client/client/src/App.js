@@ -35,7 +35,7 @@ class App extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.closeModal_details_button = this.closeModal_details_button.bind(this)
 
-        var treemap_version = '{ "name": "Mutation test", "color": "hsl(187, 70%, 50%)", "children": [  { "name": "org/apache/commons/codec/digest", "color": "hsl(87, 70%, 50%)",             "children": [                   {                        "name": "Tested",                       "color": "hsl(99, 98%, 51%)",                        "loc": 206                    },                    {                        "name": "Partially tested",                        "color": "hsl(53, 100%, 50%)",                        "loc": 12                    },                   {                        "name": "Pseudo tested",                        "color": "hsl(0, 0%, 50%)",                        "loc": 12                    },                    {                        "name": "Not covered",                        "color": "hsl(348, 100%, 50%)",                        "loc": 44                    }                ]            }        ]        }'
+        var treemap_version_fake = '{ "name": "Mutation test", "color": "hsl(187, 70%, 50%)", "children": [  { "name": "org/apache/commons/codec/digest", "color": "hsl(87, 70%, 50%)",             "children": [                   {                        "name": "Tested",                       "color": "hsl(99, 98%, 51%)",                        "loc": 206                    },                    {                        "name": "Partially tested",                        "color": "hsl(53, 100%, 50%)",                        "loc": 12                    },                   {                        "name": "Pseudo tested",                        "color": "hsl(0, 0%, 50%)",                        "loc": 12                    },                    {                        "name": "Not covered",                        "color": "hsl(348, 100%, 50%)",                        "loc": 44                    }                ]            }        ]        }'
 
 
         this.state = {
@@ -43,14 +43,14 @@ class App extends Component {
             commit_data : {commit_id: "57a288746b9e67dead9ef1d6788620bd6f8184ae", date: new Date("2019-03-05T21:23:23.446Z"),username: "martinch-kth",
                            repository:"commons-codec", packages_partially_tested: '{"pack":[{"link":"http://some/somelink"}]}',
                            packages_pseudo_tested: '{"pack":[{"link":"http://some/somelink"}]}' ,
-                           commit_url: "http://github/somecommit_url" , treemap : treemap_version,treemap_percent:treemap_version,treemap_partiallytested_sorted:treemap_version,
+                           commit_url: "http://github/somecommit_url" , treemap : treemap_version_fake,treemap_percent:treemap_version_fake,treemap_partiallytested_sorted:treemap_version_fake,
                            methods_total: "33",tested_total: "22", partially_tested_total: "22",pseudo_tested_total:"22", non_covered_total: "22"},
 
             modalIsOpen: false,
             modalName : "Modal",
             modalClickedOn : "none_yet",
             modal_items : [],
-            treemap_version : treemap_version,  //'{{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":[{"name":"org/apache/commons/codec/digest","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":106},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 44}]},{"name":"org/apache/commons/codec/language","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":100},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 5},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 3}]},{"name":"org/apache/commons/codec/binary","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":98},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 1}]},{"name":"org/apache/commons/codec/net","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":57},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]},{"name":"org/apache/commons/codec/language/bm","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":51},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 5}]},{"name":"org/apache/commons/codec/cli","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":0},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 8}]},{"name":"org/apache/commons/codec","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":3},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]}]}}'
+            treemap_version : '{{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":[{"name":"org/apache/commons/codec/digest","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":106},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 44}]},{"name":"org/apache/commons/codec/language","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":100},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 5},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 3}]},{"name":"org/apache/commons/codec/binary","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":98},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 1}]},{"name":"org/apache/commons/codec/net","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":57},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]},{"name":"org/apache/commons/codec/language/bm","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":51},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 5}]},{"name":"org/apache/commons/codec/cli","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":0},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 8}]},{"name":"org/apache/commons/codec","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":3},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]}]}}',
             value: 'default',
             data_loaded : false
         };
@@ -71,7 +71,7 @@ class App extends Component {
     }
 
     callAPI() {
-          fetch("http://130.237.59.170:3002/users/" + window.location.pathname)
+          fetch("http://130.237.59.170:3002/users" + window.location.pathname)
     //    fetch("http://localhost:3001/users" + window.location.pathname)
             .then(res => res.json())
             .then(res => this.setState({
@@ -243,30 +243,8 @@ class App extends Component {
     closeModal_details_button() {
         this.setState({modalIsOpen: false});
 
-
-
-        //    return <Testview data={this.state.modalClickedOn}/>
-
-        // your axios call here
-
-  //    localStorage.setItem("pageData", "Data Retrieved from axios request")
-      // route to new page by changing window.location
-    //  window.open("https://www.ebay.com", "_blank") //to open new page
     }
 
-
-
-/*
-In your RaisedInvoice.jsx, retrieve the data from Local Storage like this,
-
-componentWillMount() {
-  localStorage.pagedata= "your Data";
-  // set the data in state and use it through the component
-  localStorage.removeItem("pagedata");
-  // removing the data from localStorage.  Since if user clicks for another invoice it overrides this data
-}
-
-*/
 
     render() {
 
@@ -388,7 +366,13 @@ componentWillMount() {
                             <ResponsiveTreeMapHtml
                                 onClick={(e) => this.openModal(e)}
                                // root={{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":[{"name":"org/apache/commons/codec/digest","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":106},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 44}]},{"name":"org/apache/commons/codec/language","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":100},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 5},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 3}]},{"name":"org/apache/commons/codec/binary","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":98},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 1}]},{"name":"org/apache/commons/codec/net","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":57},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]},{"name":"org/apache/commons/codec/language/bm","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":51},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 5}]},{"name":"org/apache/commons/codec/cli","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":0},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 8}]},{"name":"org/apache/commons/codec","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":3},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]}]}}
+
+
+                                // FELET... måste man...ha den..som string? obj...åå..
+
                                 root={JSON.parse(this.state.treemap_version)}
+
+
                                 identity="name"
                                 value="loc"
                                 innerPadding={0}

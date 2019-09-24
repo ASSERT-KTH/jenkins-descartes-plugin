@@ -27,9 +27,6 @@ Modal.setAppElement('#root')
 
 class App extends Component {
 
-
-    var myurl
-
     constructor(props) {
         super(props);
 

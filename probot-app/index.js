@@ -425,30 +425,45 @@ module.exports = app => {
                     return all_timeslide_entries
                 }
 
-                function getTimeslide_DB_data(payload_timestamp) {
+                function getTimeslide_DB_data(jsonfile, payload_timestamp) {
 
+                    db.collection('timeslide').count(function(err, count) {
+                        console.dir(err);
+                        console.dir(count);
 
+                        if( count == 0) {
+                            console.log("No Found Records.");
 
-                    timeslide_db.findOne(function (err, commits) {
+                            var timeslide_file_DATA = createTimeslideData(jsonfile, payload_timestamp)
 
-                        if (err) {
-                            console.log('The search errored');
+                            var timecapsule = new timeslide_db({
+
+                                date: new Date(),
+                                username: "MartinO",
+                                timeslide_all : JSON.stringify(timeslide_file_DATA)
+                            });
+
+                            timecapsule.save(function (err, somestat) {
+                                if (err) return console.error(err);
+                            });
                         }
-
-                    //    else if (_.isEmpty(commits)) {
-                     //       console.log('record not found - this should only occur once..!')
-
-                            //
-                            // DO ONCE TO EMPTY DB! ONLY!
-                            //        var timeslide_file_DATA = createTimeslideData(jsonfile, payload_timestamp)
-                            //        update_timeslide_DB(timeslide_file_DATA)
-                            //  console.log(JSON.stringify(timeslide_file_DATA,null, 2))  // kolla de blev... -1 sekund..  -> testad redan - FUNKAR
-                    //    }
-
                         else {
-                            return successCallback(commits);
-                        };
-                    })
+                            console.log("Found Records : " + count);
+
+                            timeslide_db.findOne(function (err, commits) {
+
+                                if (err)
+                                {
+                                    console.log('The search errored');
+                                }
+                                else
+                                {
+                                    return successCallback(commits);
+                                };
+                            })
+
+                        }
+                    });
                 }
 
                 var successCallback = function(data) {
@@ -511,10 +526,9 @@ module.exports = app => {
                 //---------------------------------------
                 // behöver:
 
-                // //time tooo run it all...
-                var timeslide_DB_DATA = getTimeslide_DB_data(payload_timestamp)
+                var timeslide_DB_DATA = getTimeslide_DB_data(jsonfile, payload_timestamp)
 
-                // vet inte va ja ska göra med retur datat.. :-/ slänga...
+                // vet inte va ja ska göra med retur datat.. :-/ console.log något??
            }
         })
     })    )

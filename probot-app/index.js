@@ -427,23 +427,25 @@ module.exports = app => {
 
                 function getTimeslide_DB_data(payload_timestamp) {
 
+
+
                     timeslide_db.findOne(function (err, commits) {
 
-                        if (err)
-                        {
+                        if (err) {
                             console.log('The search errored');
                         }
-                        else if (_.isEmpty(commits)) {
-                            console.log('record not found - this should only occur once..!')
+
+                    //    else if (_.isEmpty(commits)) {
+                     //       console.log('record not found - this should only occur once..!')
 
                             //
                             // DO ONCE TO EMPTY DB! ONLY!
-                    //        var timeslide_file_DATA = createTimeslideData(jsonfile, payload_timestamp)
-                    //        update_timeslide_DB(timeslide_file_DATA)
+                            //        var timeslide_file_DATA = createTimeslideData(jsonfile, payload_timestamp)
+                            //        update_timeslide_DB(timeslide_file_DATA)
                             //  console.log(JSON.stringify(timeslide_file_DATA,null, 2))  // kolla de blev... -1 sekund..  -> testad redan - FUNKAR
-                        }
-                        else
-                        {
+                    //    }
+
+                        else {
                             return successCallback(commits);
                         };
                     })

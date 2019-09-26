@@ -184,6 +184,30 @@ glob("../../../../../var/lib/jenkins/workspace/test-dhell/target/pit-reports/*/m
         // TODO - fixa jsonfile LOKALT!!!
         var my_jsonfile = files.slice(-1).pop()
 
+
+
+//................. is empty??---------------------
+
+// To Count Documents of a particular collection
+        db.collection('timeslide').count(function(err, count) {
+            console.dir(err);
+            console.dir(count);
+
+            if( count == 0) {
+                console.log("No Found Records.");
+            }
+            else {
+                console.log("Found Records : " + count);
+            }
+        });
+
+
+
+
+//-------------------------------------
+
+        /*
+
         // do once...
         var timeslide_file_DATA = createTimeslideData(my_jsonfile,  "2019-09-24T01:55:09.856Z")
      //   update_timeslide_DB(timeslide_file_DATA)
@@ -199,6 +223,7 @@ glob("../../../../../var/lib/jenkins/workspace/test-dhell/target/pit-reports/*/m
             if (err) return console.error(err);
         });
 
+      */
 
     }
 })

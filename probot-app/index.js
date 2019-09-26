@@ -394,8 +394,13 @@ module.exports = app => {
                     var FROM_fake_payload_date = new Date(payload_timestamp);
 
 // faking the TO date, since we don't know when the next commit will be. The TO date will be changed on the next commit.
+             //       var to_date_edited = new Date(timestamp)
+             //       to_date_edited.setSeconds(to_date_edited.getSeconds() - 100)
+
+
+
                     var TO_fake_payload_date = new Date(payload_timestamp);
-                    TO_fake_payload_date.setSeconds(FROM_fake_payload_date.getSeconds() + 100); // faking it with +100 sec in todays date
+                    TO_fake_payload_date.setDate(FROM_fake_payload_date.getDate() + 1); // faking it with +1 in todays date
 
 //---------------------------------- make timeslide DATA from methods.js --------------------------
                     for (var i = 0; i < allmethods.length; i++) {

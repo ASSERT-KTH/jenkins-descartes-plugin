@@ -438,8 +438,8 @@ module.exports = app => {
 
                             //
                             // DO ONCE TO EMPTY DB! ONLY!
-                            var timeslide_file_DATA = createTimeslideData(jsonfile, payload_timestamp)
-                            update_timeslide_DB(timeslide_file_DATA)
+                    //        var timeslide_file_DATA = createTimeslideData(jsonfile, payload_timestamp)
+                    //        update_timeslide_DB(timeslide_file_DATA)
                             //  console.log(JSON.stringify(timeslide_file_DATA,null, 2))  // kolla de blev... -1 sekund..  -> testad redan - FUNKAR
                         }
                         else

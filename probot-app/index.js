@@ -30,7 +30,7 @@ module.exports = app => {
        console.log(context.payload.repository.name)
        console.log("------------------------------------------------------------------------------")
 
-        jenkins.job.build({name: 'test', parameters: { commitid: context.payload.head_commit.id } }, function(err) {
+        jenkins.job.build({name: 'test-dhell', parameters: { commitid: context.payload.head_commit.id } }, function(err) {
             if (err) throw err;
         });
 

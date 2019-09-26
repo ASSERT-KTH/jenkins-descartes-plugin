@@ -175,7 +175,7 @@ var glob = require('glob')
 
 // files is an array of filenames.  .... can get this file some better way..
 // *** TODO *** the filepath should be dynamic in the future...
-glob("../../../../../var/lib/jenkins/workspace/test/target/pit-reports/*/methods.json", function (err, files) {
+glob("../../../../../var/lib/jenkins/workspace/test-dhell/target/pit-reports/*/methods.json", function (err, files) {
 
     if (err) {
         console.log(err)

@@ -509,7 +509,7 @@ module.exports = app => {
                 // behöver:
 
                 // //time tooo run it all...
-                var timeslide_DB_DATA = getTimeslide_DB_data()
+                var timeslide_DB_DATA = getTimeslide_DB_data(payload_timestamp)
 
                 // vet inte va ja ska göra med retur datat.. :-/ slänga...
            }

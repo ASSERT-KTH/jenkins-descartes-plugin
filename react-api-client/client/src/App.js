@@ -79,28 +79,7 @@ class App extends Component {
                 data_loaded : true
 
             })).catch(err => err)
-              .then((res) => {
-
-                  this.myFunction(res);
-              })
     }
-
-    myFunction(res) {
-        // ... Your code ...
-        // den här skiten funkar...
-
-        if (typeof this.state.commit_data.treemap_version === 'string')
-        {
-            this.state.commit_data.treemap_version = JSON.parse(this.state.commit_data.treemap_version)
-        }
-        else
-        {
-            this.state.commit_data.treemap_version = this.state.commit_data.treemap_version
-        }
-
-
-    }
-
 
     componentDidMount() {
 

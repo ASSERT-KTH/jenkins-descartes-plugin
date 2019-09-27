@@ -35,8 +35,7 @@ class App extends Component {
         this.closeModal = this.closeModal.bind(this);
         this.closeModal_details_button = this.closeModal_details_button.bind(this)
 
-        var treemap_version = JSON.parse('{ "name": "Mutation test", "color": "hsl(187, 70%, 50%)", "children": [  { "name": "org/apache/commons/codec/digest", "color": "hsl(87, 70%, 50%)",             "children": [                   {                        "name": "Tested",                       "color": "hsl(99, 98%, 51%)",                        "loc": 206                    },                    {                        "name": "Partially tested",                        "color": "hsl(53, 100%, 50%)",                        "loc": 12                    },                   {                        "name": "Pseudo tested",                        "color": "hsl(0, 0%, 50%)",                        "loc": 12                    },                    {                        "name": "Not covered",                        "color": "hsl(348, 100%, 50%)",                        "loc": 44                    }                ]            }        ]        }')
-
+        var treemap_version = JSON.stringify('{ "name": "Mutation test", "color": "hsl(187, 70%, 50%)", "children": [  { "name": "org/apache/commons/codec/digest", "color": "hsl(87, 70%, 50%)",             "children": [                   {                        "name": "Tested",                       "color": "hsl(99, 98%, 51%)",                        "loc": 206                    },                    {                        "name": "Partially tested",                        "color": "hsl(53, 100%, 50%)",                        "loc": 12                    },                   {                        "name": "Pseudo tested",                        "color": "hsl(0, 0%, 50%)",                        "loc": 12                    },                    {                        "name": "Not covered",                        "color": "hsl(348, 100%, 50%)",                        "loc": 44                    }                ]            }        ]        }')
 
         this.state = {
 
@@ -403,7 +402,7 @@ class App extends Component {
 
                                 // FELET... måste man...ha den..som string? obj...åå..
 
-                                root={this.state.treemap_version}
+                                root={JSON.parse(this.state.treemap_version)}
 
 
                                 identity="name"

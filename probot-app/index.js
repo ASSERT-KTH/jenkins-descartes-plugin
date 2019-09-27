@@ -394,13 +394,9 @@ module.exports = app => {
                     var FROM_fake_payload_date = new Date(payload_timestamp);
 
 // faking the TO date, since we don't know when the next commit will be. The TO date will be changed on the next commit.
-             //       var to_date_edited = new Date(timestamp)
-             //       to_date_edited.setSeconds(to_date_edited.getSeconds() - 100)
-
-
 
                     var TO_fake_payload_date = new Date(payload_timestamp);
-                    TO_fake_payload_date.setDate(FROM_fake_payload_date.getDate() + 1); // faking it with +1 in todays date
+                    TO_fake_payload_date.setHours(FROM_fake_payload_date.getHours() + 1); // faking it with +1 hour..in todays date
 
 //---------------------------------- make timeslide DATA from methods.js --------------------------
                     for (var i = 0; i < allmethods.length; i++) {
@@ -488,9 +484,27 @@ module.exports = app => {
                 function merge2one(from_DB, from_methods_file, timestamp)
                 {
 
+
+                    // backa den sista commiten som finns i DB med 100 sekunder..
+
+                    // nu kommer den nya commiten ha start tid som är 100 sekunder IFRÅN sist commiten i DB..
+
+                    //    sista DB commit <---100 sec---> nya commit
+
+                    // vad händer om flera commits kommer in.. mellanrummet...det vita.. är det för litet??...
+
+                    // minns inte vad som hände.. varför blev det
+
                     var to_date_edited = new Date(timestamp)
-                    to_date_edited.setSeconds(to_date_edited.getSeconds() - 100)  // 100 sekund..vet ej.. vad som händer om man kommitar en massa...låt bli 4 now..
+
+
+
+
+             // SKIPPA ta bor 100 sek..slut datum kan va samma som nästa commits start datum....funkar IAF!?       to_date_edited.setSeconds(to_date_edited.getSeconds() - 100)  // 100 sekund..vet ej.. vad som händer om man kommitar en massa...låt bli 4 now..
                     // Du måste ändra i TO datum i det som redan finns i DB
+
+
+
                     for (var i = 0; i < from_DB.length; i++)
                     {
                         from_DB[i].data[0].data[0].timeRange[1] = to_date_edited // to string???

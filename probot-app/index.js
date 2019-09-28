@@ -222,6 +222,8 @@ module.exports = app => {
                 var packages_pseudo_tested = '{'
 
                 var treemap='{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":['
+                var treemap_percent ='{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":['
+
                 var result= '{'
 
                 array_all.forEach(function(i, idx, array){
@@ -246,6 +248,24 @@ module.exports = app => {
                         '"color": "hsl(348, 100%, 50%)",' +
                         '\"loc\": ' + i.notcovered
 
+                    var total_percentage = i.tested + i.partiallytested + i.notcovered
+
+                    var treemap_percent_child ='{"name":"'+ String(i.name) +'","color":"hsl(87, 70%, 50%)","children":[' +
+
+                        '{"name": "Tested",' +
+                        '"color":"hsl(299, 70%, 50%)",' +
+                        '"loc":' + round(percentage.from(i.tested, total_percentage))+
+                        '},{"name":"Partially tested",' +
+                        '"color": "hsl(143, 70%, 50%)",' +
+                        '"loc": ' + round(percentage.from(i.partiallytested, total_percentage)) +
+                        '},{"name": "Not covered",' +
+                        '"color": "hsl(12, 70%, 50%)",' +
+                        '\"loc\": ' + round(percentage.from(i.notcovered, total_percentage))
+
+
+
+
+
                     var tail= '}]},'
                     var last_tail= '}]}'
 
@@ -254,6 +274,8 @@ module.exports = app => {
                     if (idx === array.length - 1){
                         console.log("Last callback call at index " + idx + " with value " + i );
                         treemap = treemap + pacpac + last_tail
+                        treemap_percent = treemap_percent + treemap_percent_child + last_tail
+
                         result = result + result_package
 
                         packages_partially_tested = packages_partially_tested + result_partially_tested
@@ -263,6 +285,8 @@ module.exports = app => {
                     else
                     {
                         treemap = treemap + pacpac + tail
+                        treemap_percent = treemap_percent + treemap_percent_child + tail
+
                         result = result + result_package + result_tail
 
                         packages_partially_tested = packages_partially_tested + result_partially_tested + result_tail
@@ -276,10 +300,11 @@ module.exports = app => {
 		var close_result = '}'
 
 		treemap = treemap + close_tree
+        treemap_percent = treemap_percent + close_tree
 		result = result + close_result
 
-                packages_partially_tested = packages_partially_tested + close_result
-                packages_pseudo_tested = packages_pseudo_tested + close_result
+        packages_partially_tested = packages_partially_tested + close_result
+        packages_pseudo_tested = packages_pseudo_tested + close_result
 
            ///// JUST CHECKING ////////////////////////////////////////
            var isJSON = require('is-valid-json');
@@ -287,16 +312,16 @@ module.exports = app => {
            // "obj" can be {},{"foo":"bar"},2,"2",true,false,null,undefined, etc.
            // var obj = "any JS literal here";
 
-           if( isJSON(result) ){
+           if( isJSON(treemap_percent) ){
 
            // Valid JSON, do something
-          console.log(result)
+          console.log(treemap_percent)
           }
           else{
 
           // not a valid JSON, show friendly error message
           console.log("not valid JSON")
-          console.log(result)
+         // console.log(result)
           }
 
                 // jenkins parsing
@@ -319,17 +344,18 @@ module.exports = app => {
                                        username: my_context.payload.head_commit.author.username,
                                        repository:my_context.payload.repository.name,
                                        packages_partially_tested: packages_partially_tested ,
-
-				       // NEW
                                        packages_pseudo_tested: packages_pseudo_tested ,
-
                                        commit_url: my_context.payload.head_commit.url ,
                                        treemap : treemap,
+                                       treemap_percent : treemap_percent,
+
+
+                                       treemap_partiallytested_sorted : treemap,
+
+
                                        methods_total: methods_total ,
                                        tested_total: tested_total,
                                        partially_tested_total: partially_tested_total ,
-
-                                       // NEW
                                        pseudo_tested_total : pseudo_tested_total,
 
                                        non_covered_total: non_covered_total });
@@ -355,10 +381,8 @@ module.exports = app => {
 
                 // HÄR KOMMER TIMESLIDE code...
                 //----------------------------------------
-                // behövr... gör om SEN
 
                 var payload_timestamp = my_context.payload.head_commit.timestamp
-
 
                 var timeslide_entry = class timeslide_entry {
                     constructor(method_name, package_name, classification, timestamp_from, timestamp_to) {
@@ -401,8 +425,6 @@ module.exports = app => {
 //---------------------------------- make timeslide DATA from methods.js --------------------------
                     for (var i = 0; i < allmethods.length; i++) {
                         var testmethod = allmethods[i];
-
-
 
                         var textArray = [
                             'tested',

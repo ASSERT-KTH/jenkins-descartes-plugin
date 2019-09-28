@@ -259,11 +259,12 @@ class App extends Component {
 
     render() {
 
-      //  const { activeItem } = this.state
 
         if (this.state.data_loaded === false) {
             return null;
         }
+
+        const { activeItem } = this.state
 
         return (
 

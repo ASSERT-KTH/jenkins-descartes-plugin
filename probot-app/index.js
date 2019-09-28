@@ -4,7 +4,7 @@ mongoose.connect('mongodb://127.0.0.1/commits');
 // Register the mongoose model
 const Stats = require('./StatSchema')
 var timeslide_db = require('./timeslide_model');
-
+var round = require( 'math-round' );
 
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -262,10 +262,6 @@ module.exports = app => {
                         '"color": "hsl(12, 70%, 50%)",' +
                         '\"loc\": ' + round(percentage.from(i.notcovered, total_percentage))
 
-
-
-
-
                     var tail= '}]},'
                     var last_tail= '}]}'
 
@@ -291,7 +287,6 @@ module.exports = app => {
 
                         packages_partially_tested = packages_partially_tested + result_partially_tested + result_tail
                         packages_pseudo_tested = packages_pseudo_tested + result_pseudo_tested + result_tail
-
                     }
                 });
 

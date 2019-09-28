@@ -36,7 +36,7 @@ module.exports = app => {
 
         // if we in the future need alter jenkins jobs..
        /*
-       if (context.payload.repository.name === "testaaaaaaaaaaaaaa")
+       if (context.payload.repository.name === "testaaaaaaaaaaaa")
        {
            jenkins.job.build({name: 'test-dhell' }, function(err) {
                if (err) throw err;

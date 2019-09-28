@@ -4,6 +4,8 @@ mongoose.connect('mongodb://127.0.0.1/commits');
 // Register the mongoose model
 const Stats = require('./StatSchema')
 var timeslide_db = require('./timeslide_model');
+
+var percentage = require('percentage-calc');
 var round = require( 'math-round' );
 
 var db = mongoose.connection;

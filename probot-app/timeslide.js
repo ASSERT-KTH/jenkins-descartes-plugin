@@ -45,7 +45,7 @@ function createTimeslideData(jsonfile , payload_timestamp) {    // tex.. 2019-08
 
 // faking the TO date, since we don't know when the next commit will be. The TO date will be changed on the next commit.
     var TO_fake_payload_date = new Date(payload_timestamp);
-    TO_fake_payload_date.setDate(FROM_fake_payload_date.getDate() + 1); // faking it with +1 in todays date
+    TO_fake_payload_date.setHours(FROM_fake_payload_date.getHours() + 1); // faking it with +1 hour..in todays date
 
 //---------------------------------- make timeslide DATA from methods.js --------------------------
     for (var i = 0; i < allmethods.length; i++) {
@@ -118,7 +118,7 @@ function merge2one(from_DB, from_methods_file, timestamp)
 {
 
     var to_date_edited = new Date(timestamp)
-    to_date_edited.setSeconds(to_date_edited.getSeconds() - 100)  // 100 sekund..vet ej.. vad som händer om man kommitar en massa...låt bli 4 now..
+   // SKIPPA... to_date_edited.setSeconds(to_date_edited.getSeconds() - 100)  // 100 sekund..vet ej.. vad som händer om man kommitar en massa...låt bli 4 now..
     // Du måste ändra i TO datum i det som redan finns i DB
     for (var i = 0; i < from_DB.length; i++)
     {
@@ -175,7 +175,7 @@ var glob = require('glob')
 
 // files is an array of filenames.  .... can get this file some better way..
 // *** TODO *** the filepath should be dynamic in the future...
-glob("../../../../../var/lib/jenkins/workspace/test-dhell/target/pit-reports/*/methods.json", function (err, files) {
+glob("../../../../../var/lib/jenkins/workspace/test/target/pit-reports/*/methods.json", function (err, files) {
 
     if (err) {
         console.log(err)
@@ -206,7 +206,7 @@ glob("../../../../../var/lib/jenkins/workspace/test-dhell/target/pit-reports/*/m
 
 //-------------------------------------
 
-        /*
+
 
         // do once...
         var timeslide_file_DATA = createTimeslideData(my_jsonfile,  "2019-09-24T01:55:09.856Z")
@@ -223,7 +223,7 @@ glob("../../../../../var/lib/jenkins/workspace/test-dhell/target/pit-reports/*/m
             if (err) return console.error(err);
         });
 
-      */
+
 
     }
 })

@@ -341,6 +341,11 @@ module.exports = app => {
                 // New ..sorting..hope..it ..workz..
                 var treemap_sorted_by_partiallytested = JSON.stringify(sort(JSON.parse(treemap).children).desc(p => p.children[1].loc))
 
+                var treemap_partial  ='{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":'
+
+                var close_result_partial = '}'
+
+
                 var stat = new Stats({ commit_id: my_context.payload.head_commit.id,
                                        date: my_context.payload.head_commit.timestamp,
                                        username: my_context.payload.head_commit.author.username,
@@ -351,7 +356,7 @@ module.exports = app => {
                                        treemap : treemap,
                                        treemap_percent : treemap_percent,
 
-                                       treemap_partiallytested_sorted : treemap_sorted_by_partiallytested,
+                                       treemap_partiallytested_sorted : treemap_partial + treemap_sorted_by_partiallytested + close_result_partial,
 
                                        methods_total: methods_total ,
                                        tested_total: tested_total,

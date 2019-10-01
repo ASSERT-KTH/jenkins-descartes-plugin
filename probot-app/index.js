@@ -17,7 +17,7 @@ db.once('open', function() {
     console.log('db connected...')
 });
 
-var jenkins_project_name = 'test_development'  // test
+var jenkins_project_name = 'test'  // test
 
 // SAVE for re-authentication
 var my_context

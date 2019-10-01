@@ -571,7 +571,7 @@ module.exports = app => {
                 //---------------------------------------
                 // behöver:
 
-            // SKIPPA just nu..    var timeslide_DB_DATA = getTimeslide_DB_data(jsonfile, payload_timestamp)
+              var timeslide_DB_DATA = getTimeslide_DB_data(jsonfile, payload_timestamp)
 
                 // vet inte va ja ska göra med retur datat.. :-/ console.log något??
            }

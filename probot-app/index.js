@@ -336,6 +336,9 @@ module.exports = app => {
                 console.log('jenk_:'+ jenkins_info)
                 console.log('jenk_status:'+ jenkins_status)
 
+                // New ..sorting..hope..it ..workz..
+                var treemap_sorted_by_partiallytested = JSON.stringify(sort(JSON.parse(treemap).children).desc(p => p.children[1].loc)
+
                 var stat = new Stats({ commit_id: my_context.payload.head_commit.id,
                                        date: my_context.payload.head_commit.timestamp,
                                        username: my_context.payload.head_commit.author.username,
@@ -346,9 +349,7 @@ module.exports = app => {
                                        treemap : treemap,
                                        treemap_percent : treemap_percent,
 
-
-                                       treemap_partiallytested_sorted : treemap,
-
+                                       treemap_partiallytested_sorted : treemap_sorted_by_partiallytested,
 
                                        methods_total: methods_total ,
                                        tested_total: tested_total,
@@ -517,11 +518,8 @@ module.exports = app => {
                     var to_date_edited = new Date(timestamp)
 
 
-
-
              // SKIPPA ta bor 100 sek..slut datum kan va samma som nästa commits start datum....funkar IAF!?       to_date_edited.setSeconds(to_date_edited.getSeconds() - 100)  // 100 sekund..vet ej.. vad som händer om man kommitar en massa...låt bli 4 now..
                     // Du måste ändra i TO datum i det som redan finns i DB
-
 
 
                     for (var i = 0; i < from_DB.length; i++)
@@ -564,7 +562,7 @@ module.exports = app => {
                 //---------------------------------------
                 // behöver:
 
-                var timeslide_DB_DATA = getTimeslide_DB_data(jsonfile, payload_timestamp)
+            // SKIPPA just nu..    var timeslide_DB_DATA = getTimeslide_DB_data(jsonfile, payload_timestamp)
 
                 // vet inte va ja ska göra med retur datat.. :-/ console.log något??
            }

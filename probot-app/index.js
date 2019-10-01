@@ -337,7 +337,7 @@ module.exports = app => {
                 console.log('jenk_status:'+ jenkins_status)
 
                 // New ..sorting..hope..it ..workz..
-                var treemap_sorted_by_partiallytested = JSON.stringify(sort(JSON.parse(treemap).children).desc(p => p.children[1].loc)
+                var treemap_sorted_by_partiallytested = JSON.stringify(sort(JSON.parse(treemap).children).desc(p => p.children[1].loc))
 
                 var stat = new Stats({ commit_id: my_context.payload.head_commit.id,
                                        date: my_context.payload.head_commit.timestamp,

@@ -17,6 +17,8 @@ db.once('open', function() {
     console.log('db connected...')
 });
 
+var jenkins_project_name = 'test_development'  // test
+
 // SAVE for re-authentication
 var my_context
 var jsonfile
@@ -34,7 +36,7 @@ module.exports = app => {
        console.log(context.payload.repository.name)
        console.log("------------------------------------------------------------------------------")
 
-        jenkins.job.build({name: 'test-dhell', parameters: { commitid: context.payload.head_commit.id } }, function(err) {
+        jenkins.job.build({name: jenkins_project_name, parameters: { commitid: context.payload.head_commit.id } }, function(err) {
             if (err) throw err;
         });
 
@@ -97,7 +99,7 @@ module.exports = app => {
         // files is an array of filenames.  .... can get this file some better way..
         // *** TODO *** the filepath should be dynamic in the future...
     //  glob("../../../../../var/lib/jenkins/workspace/test-dhell/target/pit-reports/*/methods.json", function (err, files) {
-        glob("../../../../../var/lib/jenkins/workspace/test-dhell/target/pit-reports/*/methods.json", function (err, files) {
+        glob("../../../../../var/lib/jenkins/workspace/" + jenkins_project_name +"/target/pit-reports/*/methods.json", function (err, files) {
 
             if (err) {
                 console.log(err)

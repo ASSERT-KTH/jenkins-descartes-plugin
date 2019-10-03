@@ -84,6 +84,8 @@ class App extends Component {
     componentDidMount() {
 
 
+        console.log("--------globalstring: " +  global.globalString )
+
         if (!global.globalString){
 
             global.globalString = window.location.pathname

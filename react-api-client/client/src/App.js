@@ -74,13 +74,16 @@ class App extends Component {
     callAPI() {
           fetch("http://130.237.59.170:3002/users" + global.globalString ) //window.location.pathname)
     //    fetch("http://localhost:3001/users" + window.location.pathname)
+
             .then(res => res.json())
             .then(res => this.setState({
 
                 commit_data: res,
                 data_loaded : true
 
-            })).catch(err => err)
+            }))
+
+            .then(this._asyncRequest = null).catch(err => err)
     }
 
     componentDidMount() {
@@ -98,12 +101,12 @@ class App extends Component {
         require('./Treeview');
 
 
-        this._asyncRequest = this.callAPI().then(
-            externalData => {
-                this._asyncRequest = null;
-                this.setState({externalData});  // ta bort ALLT antagligen...
-            }
-        );
+        this._asyncRequest = this.callAPI() // .then(
+          //  externalData => {
+           //     this._asyncRequest = null;
+          //      this.setState({externalData});  // ta bort ALLT antagligen...
+          //  }
+      //  );
 
 
 

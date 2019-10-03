@@ -265,13 +265,13 @@ class App extends Component {
 
         if (!this.state.data_loaded) {
             return null;
-        }
+        }else
+            {
+            const { activeItem } = this.state
 
-        const { activeItem } = this.state
+            return (
 
-        return (
-
-            <Grid>
+                <Grid>
 
                     <Modal
                         isOpen={this.state.modalIsOpen}
@@ -288,128 +288,130 @@ class App extends Component {
 
                         <Link
 
-                         to={{
+                            to={{
                                 pathname: `/testview/${this.state.modalClickedOn }`,
                                 search: '',
                                 hash: '', // test ---this.state.modalClickedOn.. vilket..inte hjälper...aaja..
                                 state: { package_name : this.state.modalName,
-                                         partially_tested : this.state.commit_data.packages_partially_tested,
-                                         pseudo_tested : this.state.commit_data.packages_pseudo_tested
+                                    partially_tested : this.state.commit_data.packages_partially_tested,
+                                    pseudo_tested : this.state.commit_data.packages_pseudo_tested
                                 }
                             }}>
 
-                           <button onClick={this.closeModal} type="button" >Details</button>
+                            <button onClick={this.closeModal} type="button" >Details</button>
                         </Link>
                     </Modal>
 
 
-                <Grid.Row>
-                    <Grid.Column width={13}>
-                        <Segment raised>Repository: {this.state.commit_data.repository} <a href={this.state.commit_data.commit_url}> - Link to GitHub commit.</a> </Segment>
-                    </Grid.Column>
-                </Grid.Row>
-
-             <Grid.Row>
-               <Grid.Column width={13}>
-		<div className="ui horizontal segments">
-		   <div className="ui segment">
-		     <Statistic value={this.state.commit_data.methods_total} label="Total Methods" size="small" color="black" />
-		   </div>
-		 <div className="ui segment">
-		     <Statistic value={this.state.commit_data.tested_total} label="tested" size="small" color="teal" />
- 		 </div>
-  		 <div className="ui segment">
- 		     <Statistic value={this.state.commit_data.partially_tested_total} label="Partially tested" size="small" color="yellow" />
-  		 </div>
-  		  <div className="ui segment">
-         	     <Statistic value={this.state.commit_data.pseudo_tested_total} label="Pseudo tested" size="small" color="grey" />
- 	          </div>
-	          <div className="ui segment">
-                   <Statistic value={this.state.commit_data.non_covered_total} label="non-covered" size="small" color="orange" />
-		  </div>
-	  	 </div>
-               </Grid.Column>
-              </Grid.Row>
-
-                <Form>
-                    <Grid columns={3} >
                     <Grid.Row>
-                        <Grid.Column>
-                    <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Default'
-                            name='checkboxRadioGroup'
-                            value='default'
-                            checked={this.state.value === 'default'}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                    </Grid.Column>
-                        <Grid.Column>
-                        <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Percentage per package'
-                            name='checkboxRadioGroup'
-                            value='percentage_per_package'
-                            checked={this.state.value === 'percentage_per_package'}
-                            onChange={this.handleChange}
-                        />
-                          </Form.Field>
+                        <Grid.Column width={13}>
+                            <Segment raised>Repository: {this.state.commit_data.repository} <a href={this.state.commit_data.commit_url}> - Link to GitHub commit.</a> </Segment>
                         </Grid.Column>
-                        <Grid.Column>
-                        <Form.Field>
-                        <Checkbox
-                            radio
-                            label='Largest number of pseudo tested methods per package'
-                            name='checkboxRadioGroup'
-                            value='largest_number_per_package'
-                            checked={this.state.value === 'largest_number_per_package'}
-                            onChange={this.handleChange}
-                        />
-                    </Form.Field>
-                      </Grid.Column>
                     </Grid.Row>
-            </Grid>
-                </Form>
 
-                <Grid.Row >
-                <Grid.Column width={13}>
-                 <div className="chart">
-                            <ResponsiveTreeMapHtml
-                                onClick={(e) => this.openModal(e)}
-                               // root={{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":[{"name":"org/apache/commons/codec/digest","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":106},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 44}]},{"name":"org/apache/commons/codec/language","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":100},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 5},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 3}]},{"name":"org/apache/commons/codec/binary","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":98},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 1}]},{"name":"org/apache/commons/codec/net","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":57},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]},{"name":"org/apache/commons/codec/language/bm","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":51},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 5}]},{"name":"org/apache/commons/codec/cli","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":0},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 8}]},{"name":"org/apache/commons/codec","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":3},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]}]}}
+                    <Grid.Row>
+                        <Grid.Column width={13}>
+                            <div className="ui horizontal segments">
+                                <div className="ui segment">
+                                    <Statistic value={this.state.commit_data.methods_total} label="Total Methods" size="small" color="black" />
+                                </div>
+                                <div className="ui segment">
+                                    <Statistic value={this.state.commit_data.tested_total} label="tested" size="small" color="teal" />
+                                </div>
+                                <div className="ui segment">
+                                    <Statistic value={this.state.commit_data.partially_tested_total} label="Partially tested" size="small" color="yellow" />
+                                </div>
+                                <div className="ui segment">
+                                    <Statistic value={this.state.commit_data.pseudo_tested_total} label="Pseudo tested" size="small" color="grey" />
+                                </div>
+                                <div className="ui segment">
+                                    <Statistic value={this.state.commit_data.non_covered_total} label="non-covered" size="small" color="orange" />
+                                </div>
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
+
+                    <Form>
+                        <Grid columns={3} >
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <Form.Field>
+                                        <Checkbox
+                                            radio
+                                            label='Default'
+                                            name='checkboxRadioGroup'
+                                            value='default'
+                                            checked={this.state.value === 'default'}
+                                            onChange={this.handleChange}
+                                        />
+                                    </Form.Field>
+                                </Grid.Column>
+                                <Grid.Column>
+                                    <Form.Field>
+                                        <Checkbox
+                                            radio
+                                            label='Percentage per package'
+                                            name='checkboxRadioGroup'
+                                            value='percentage_per_package'
+                                            checked={this.state.value === 'percentage_per_package'}
+                                            onChange={this.handleChange}
+                                        />
+                                    </Form.Field>
+                                </Grid.Column>
+                                <Grid.Column>
+                                    <Form.Field>
+                                        <Checkbox
+                                            radio
+                                            label='Largest number of pseudo tested methods per package'
+                                            name='checkboxRadioGroup'
+                                            value='largest_number_per_package'
+                                            checked={this.state.value === 'largest_number_per_package'}
+                                            onChange={this.handleChange}
+                                        />
+                                    </Form.Field>
+                                </Grid.Column>
+                            </Grid.Row>
+                        </Grid>
+                    </Form>
+
+                    <Grid.Row >
+                        <Grid.Column width={13}>
+                            <div className="chart">
+                                <ResponsiveTreeMapHtml
+                                    onClick={(e) => this.openModal(e)}
+                                    // root={{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":[{"name":"org/apache/commons/codec/digest","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":106},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 44}]},{"name":"org/apache/commons/codec/language","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":100},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 5},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 3}]},{"name":"org/apache/commons/codec/binary","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":98},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 1}]},{"name":"org/apache/commons/codec/net","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":57},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 4},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]},{"name":"org/apache/commons/codec/language/bm","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":51},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 2},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 5}]},{"name":"org/apache/commons/codec/cli","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":0},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 8}]},{"name":"org/apache/commons/codec","color":"hsl(87, 70%, 50%)","children":[{"name": "Tested","color":"hsl(99, 98%, 51%)","loc":3},{"name":"Partially tested","color": "hsl(53, 100%, 50%)","loc": 0},{"name": "Not covered","color": "hsl(348, 100%, 50%)","loc": 0}]}]}}
 
 
-                                // FELET... måste man...ha den..som string? obj...åå..
+                                    // FELET... måste man...ha den..som string? obj...åå..
 
-                                root={JSON.parse(this.state.treemap_version)}
+                                    root={JSON.parse(this.state.treemap_version)}
 
-                                identity="name"
-                                value="loc"
-                                innerPadding={0}
-                                outerPadding={3}
+                                    identity="name"
+                                    value="loc"
+                                    innerPadding={0}
+                                    outerPadding={3}
 
-                                label="loc"
-                                labelFormat="0"
+                                    label="loc"
+                                    labelFormat="0"
 
-                                labelSkipSize={2}
-                                labelTextColor="black"
-                                colors="white"
-                                colorBy="name"
-                                borderColor="inherit:darker(0.3)"
-                                animate={true}
-                                motionStiffness={90}
-                                motionDamping={11}
-                            />
-                      </div>
-                 </Grid.Column>
-                </Grid.Row>
+                                    labelSkipSize={2}
+                                    labelTextColor="black"
+                                    colors="white"
+                                    colorBy="name"
+                                    borderColor="inherit:darker(0.3)"
+                                    animate={true}
+                                    motionStiffness={90}
+                                    motionDamping={11}
+                                />
+                            </div>
+                        </Grid.Column>
+                    </Grid.Row>
 
-            </Grid>
+                </Grid>
+            )
 
-        )
+        }
+
     } // render slut..
 } export default App;
 

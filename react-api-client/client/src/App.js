@@ -39,6 +39,8 @@ class App extends Component {
 
         this.state = {
 
+            externalData: null,
+
             commit_data : {commit_id: "57a288746b9e67dead9ef1d6788620bd6f8184ae", date: new Date("2019-03-05T21:23:23.446Z"),username: "martinch-kth",
                            repository:"commons-codec", packages_partially_tested: '{"pack":[{"link":"http://some/somelink"}]}',
                            packages_pseudo_tested: '{"pack":[{"link":"http://some/somelink"}]}' ,
@@ -95,10 +97,28 @@ class App extends Component {
         require('./Pseudoview');    // needed to reach global var in these modules
         require('./Treeview');
 
-        this.callAPI()
+
+        this._asyncRequest = this.callAPI().then(
+            externalData => {
+                this._asyncRequest = null;
+                this.setState({externalData});  // ta bort ALLT antagligen...
+            }
+        );
+
+
+
+      //  this.callAPI()
         console.log("--------globalstring--sist: " +  global.globalString )
 
     }
+
+    componentWillUnmount() {
+        if (this._asyncRequest) {
+            this._asyncRequest.cancel();
+        }
+    }
+
+
 
     openModal(e) {
 
@@ -263,10 +283,10 @@ class App extends Component {
     render() {
 
 
-        if (!this.state.data_loaded) {
-            return null;
-        }else
-            {
+        if (this.state.externalData === null) {
+            return null; // ??? eller inget???????????
+        }
+        else {
             const { activeItem } = this.state
 
             return (

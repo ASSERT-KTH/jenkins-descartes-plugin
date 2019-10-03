@@ -96,6 +96,7 @@ class App extends Component {
         require('./Treeview');
 
         this.callAPI()
+        console.log("--------globalstring--sist: " +  global.globalString )
 
     }
 

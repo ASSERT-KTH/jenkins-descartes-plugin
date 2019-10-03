@@ -263,7 +263,7 @@ class App extends Component {
     render() {
 
 
-        if (this.state.data_loaded === false) {
+        if (!this.state.data_loaded) {
             return null;
         }
 

@@ -76,14 +76,18 @@ class App extends Component {
     //    fetch("http://localhost:3001/users" + window.location.pathname)
 
             .then(res => res.json())
-            .then(res => this.setState({
+            .then(res => {
+
+                this._asyncRequest = null
+
+                this.setState({
 
                 commit_data: res,
                 data_loaded : true
 
-            }))
+            })});
 
-            .then(this._asyncRequest = null).catch(err => err)
+           // ).catch(err => err)
     }
 
     componentDidMount() {
@@ -101,7 +105,7 @@ class App extends Component {
         require('./Treeview');
 
 
-        this._asyncRequest = this.callAPI() // .then(
+       // this._asyncRequest = this.callAPI() // .then(
           //  externalData => {
            //     this._asyncRequest = null;
           //      this.setState({externalData});  // ta bort ALLT antagligen...

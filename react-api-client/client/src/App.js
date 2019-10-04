@@ -25,6 +25,8 @@ const customStyles = {
 // Make sure to bind modal to your appElement (http://reactcommunity.org/react-modal/accessibility/)
 Modal.setAppElement('#root')
 
+const axios = require('axios');
+
 class App extends Component {
 
     constructor(props) {
@@ -78,8 +80,6 @@ class App extends Component {
             .then(res => res.json())
             .then(res => {
 
-                this._asyncRequest = null
-
                 this.setState({
 
                 commit_data: res,
@@ -92,7 +92,6 @@ class App extends Component {
 
     componentDidMount() {
 
-
         console.log("--------globalstring: " +  global.globalString )
 
         if (!global.globalString){
@@ -104,28 +103,28 @@ class App extends Component {
         require('./Pseudoview');    // needed to reach global var in these modules
         require('./Treeview');
 
+        axios.get("http://130.237.59.170:3002/users" + global.globalString)
+            .then(function (response) {
+                // handle success
 
-       // this._asyncRequest = this.callAPI() // .then(
-          //  externalData => {
-           //     this._asyncRequest = null;
-          //      this.setState({externalData});  // ta bort ALLT antagligen...
-          //  }
-      //  );
+                this.setState({
+                    commit_data: response,
+                    data_loaded : true
+                })
 
+                console.log(response);
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            })
+            .finally(function () {
+                // always executed
+            });
 
-
-      //  this.callAPI()
+       // this.callAPI()
         console.log("--------globalstring--sist: " +  global.globalString )
-
     }
-
-    componentWillUnmount() {
-        if (this._asyncRequest) {
-            this._asyncRequest.cancel();
-        }
-    }
-
-
 
     openModal(e) {
 

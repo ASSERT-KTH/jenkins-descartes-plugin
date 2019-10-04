@@ -104,15 +104,18 @@ class App extends Component {
         require('./Treeview');
 
         axios.get("http://130.237.59.170:3002/users" + global.globalString)
-            .then(function (response) {
+            .then(res => res.json())
+            .then(res => {
+
+          //  .then(function (response) {
                 // handle success
 
                 this.setState({
-                    commit_data: response,
+                    commit_data: res,
                     data_loaded : true
                 })
 
-                console.log(response);
+                console.log(res);
             })
             .catch(function (error) {
                 // handle error

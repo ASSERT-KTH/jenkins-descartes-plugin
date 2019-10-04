@@ -87,7 +87,7 @@ class App extends Component {
 
             })});
 
-           // ).catch(err => err)
+           // ).catch(err => err)   // håller på å färsäkerv få vyn direkt efter laddad..gick förrrrr!!! de knapparna som sabbar! radiobuttons
     }
 
     componentDidMount() {

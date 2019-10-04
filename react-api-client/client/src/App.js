@@ -115,7 +115,7 @@ class App extends Component {
                     data_loaded : true
                 })
 
-                console.log(res);
+           //     console.log(res);
             })
             .catch(function (error) {
                 // handle error

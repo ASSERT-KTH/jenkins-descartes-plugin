@@ -33,40 +33,26 @@ module.exports = app => {
         var jenkins = require('jenkins')({ baseUrl: 'http://admin:admin@130.237.59.170:8080', crumbIssuer: true })
 
        console.log("------------------------------------------------------------------------------")
-       console.log(context.payload.repository.name)
+       console.log(context.payload.repository.full_name)
        console.log("------------------------------------------------------------------------------")
 
-        jenkins.job.build({name: jenkins_project_name, parameters: { commitid: context.payload.head_commit.id } }, function(err) {
-            if (err) throw err;
-        });
-
-        // if we in the future need alter jenkins jobs..
-       /*
-       if (context.payload.repository.name === "testaaaaaaaaaaaa")
+       if (context.payload.repository.full_name === "INRIA/spoon")
        {
-           jenkins.job.build({name: 'test-dhell' }, function(err) {
+           jenkins.job.build({name: jenkins_project_name, parameters: { commitid: context.payload.head_commit.id } }, function(err) {
                if (err) throw err;
-            });
-            console.log("well done yoda MASTER!")
+           });
+           console.log("--------------------INRIA/spoon repo triggered jenkins job..................................")
+
+           app.log('push event fired')
+           app.log(context.payload)
        }
        else
        {
-           console.log("---------------------should not be seeeeeeeeeeeeeeeeeen...................................")
-           jenkins.job.build({name: 'test-dhell', parameters: { commitid: context.payload.head_commit.id } }, function(err) {
-           if (err) throw err;
-           });
+           console.log("-------------------- Beware! -> this is not a commit from spoon repo - Jenkins Aborted!......")
        }
-       */
-
-        app.log('push event fired')
-        app.log(context.payload)
 
         my_context = context
-
-       // kankse måste skapa status här...i värsta fall,,,?..
     })
-
-
 
   // Get an express router to expose new HTTP endpoints
   const router = app.route('/')

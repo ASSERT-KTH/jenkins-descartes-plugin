@@ -104,7 +104,7 @@ class App extends Component {
         require('./Treeview');
 
         axios.get("http://130.237.59.170:3002/users" + global.globalString)
-            .then(res => res.json())
+          //  .then(res => res.json())
             .then(res => {
 
           //  .then(function (response) {

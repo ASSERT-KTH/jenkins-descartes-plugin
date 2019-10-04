@@ -105,13 +105,13 @@ class App extends Component {
 
         axios.get("http://130.237.59.170:3002/users" + global.globalString)
           //  .then(res => res.json())
-            .then(res => {
+            .then(response => {
 
           //  .then(function (response) {
                 // handle success
 
                 this.setState({
-                    commit_data: res,
+                    commit_data: response,
                     data_loaded : true
                 })
 

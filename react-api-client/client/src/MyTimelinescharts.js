@@ -120,8 +120,6 @@ export default class MyTimelinescharts extends Component {
     }
 
     myFunction(res) {
-        // ... Your code ...
-        // den här skiten funkar...
 
         if (typeof this.state.commit_data.timeslide_all === 'string')
         {
@@ -164,6 +162,7 @@ export default class MyTimelinescharts extends Component {
          if (this.state.data_loaded === false) {
             return null;
         }
+
 
         console.log("------------------typeof.......")
         console.log(typeof this.state.commit_data.timeslide_all)

@@ -103,29 +103,7 @@ class App extends Component {
         require('./Pseudoview');    // needed to reach global var in these modules
         require('./Treeview');
 
-        axios.get("http://130.237.59.170:3002/users" + global.globalString)
-          //  .then(res => res.json())
-            .then(response => {
-
-          //  .then(function (response) {
-                // handle success
-
-                this.setState({
-                    commit_data: response,
-                    data_loaded : true
-                })
-
-           //     console.log(res);
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            })
-            .finally(function () {
-                // always executed
-            });
-
-       // this.callAPI()
+        this.callAPI()
         console.log("--------globalstring--sist: " +  global.globalString )
     }
 

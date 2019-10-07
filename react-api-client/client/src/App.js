@@ -70,12 +70,11 @@ class App extends Component {
         if (value === 'largest_number_per_package')
             this.state.treemap_version = this.state.commit_data.treemap_partiallytested_sorted
 
-
     }
 
     callAPI() {
           fetch("http://130.237.59.170:3002/users" + global.globalString ) //window.location.pathname)
-    //    fetch("http://localhost:3001/users" + window.location.pathname)
+       // fetch("http://localhost:3002/users" + global.globalString)
 
             .then(res => res.json())
             .then(res => {
@@ -83,11 +82,10 @@ class App extends Component {
                 this.setState({
 
                 commit_data: res,
-                data_loaded : true
+                data_loaded : true,
+                treemap_version : res.treemap
 
-            })});
-
-           // ).catch(err => err)   // håller på å färsäkerv få vyn direkt efter laddad..gick förrrrr!!! de knapparna som sabbar! radiobuttons
+            })}).catch(err => err)   // håller på å färsäkerv få vyn direkt efter laddad..gick förrrrr!!! de knapparna som sabbar! radiobuttons
     }
 
     componentDidMount() {
@@ -269,12 +267,13 @@ class App extends Component {
 
     render() {
 
-
-        if (this.state.externalData === null) {
-            return null; // ??? eller inget???????????
+        if (this.state.data_loaded === false) {
+            return null;
         }
         else {
-            const { activeItem } = this.state
+
+            const {activeItem} = this.state
+
 
             return (
 
@@ -285,7 +284,7 @@ class App extends Component {
                         onAfterOpen={this.afterOpenModal}
                         onRequestClose={this.closeModal}
                         style={customStyles}
-                        contentLabel={this.state.modalLabel} >
+                        contentLabel={this.state.modalLabel}>
                         <h2 ref={subtitle => this.subtitle = subtitle}>{this.state.modalName}</h2>
 
                         <ul>
@@ -296,23 +295,25 @@ class App extends Component {
                         <Link
 
                             to={{
-                                pathname: `/testview/${this.state.modalClickedOn }`,
+                                pathname: `/testview/${this.state.modalClickedOn}`,
                                 search: '',
                                 hash: '', // test ---this.state.modalClickedOn.. vilket..inte hjälper...aaja..
-                                state: { package_name : this.state.modalName,
-                                    partially_tested : this.state.commit_data.packages_partially_tested,
-                                    pseudo_tested : this.state.commit_data.packages_pseudo_tested
+                                state: {
+                                    package_name: this.state.modalName,
+                                    partially_tested: this.state.commit_data.packages_partially_tested,
+                                    pseudo_tested: this.state.commit_data.packages_pseudo_tested
                                 }
                             }}>
 
-                            <button onClick={this.closeModal} type="button" >Details</button>
+                            <button onClick={this.closeModal} type="button">Details</button>
                         </Link>
                     </Modal>
 
 
                     <Grid.Row>
                         <Grid.Column width={13}>
-                            <Segment raised>Repository: {this.state.commit_data.repository} <a href={this.state.commit_data.commit_url}> - Link to GitHub commit.</a> </Segment>
+                            <Segment raised>Repository: {this.state.commit_data.repository} <a
+                                href={this.state.commit_data.commit_url}> - Link to GitHub commit.</a> </Segment>
                         </Grid.Column>
                     </Grid.Row>
 
@@ -320,26 +321,31 @@ class App extends Component {
                         <Grid.Column width={13}>
                             <div className="ui horizontal segments">
                                 <div className="ui segment">
-                                    <Statistic value={this.state.commit_data.methods_total} label="Total Methods" size="small" color="black" />
+                                    <Statistic value={this.state.commit_data.methods_total} label="Total Methods"
+                                               size="small" color="black"/>
                                 </div>
                                 <div className="ui segment">
-                                    <Statistic value={this.state.commit_data.tested_total} label="tested" size="small" color="teal" />
+                                    <Statistic value={this.state.commit_data.tested_total} label="tested" size="small"
+                                               color="teal"/>
                                 </div>
                                 <div className="ui segment">
-                                    <Statistic value={this.state.commit_data.partially_tested_total} label="Partially tested" size="small" color="yellow" />
+                                    <Statistic value={this.state.commit_data.partially_tested_total}
+                                               label="Partially tested" size="small" color="yellow"/>
                                 </div>
                                 <div className="ui segment">
-                                    <Statistic value={this.state.commit_data.pseudo_tested_total} label="Pseudo tested" size="small" color="grey" />
+                                    <Statistic value={this.state.commit_data.pseudo_tested_total} label="Pseudo tested"
+                                               size="small" color="grey"/>
                                 </div>
                                 <div className="ui segment">
-                                    <Statistic value={this.state.commit_data.non_covered_total} label="non-covered" size="small" color="orange" />
+                                    <Statistic value={this.state.commit_data.non_covered_total} label="non-covered"
+                                               size="small" color="orange"/>
                                 </div>
                             </div>
                         </Grid.Column>
                     </Grid.Row>
 
                     <Form>
-                        <Grid columns={3} >
+                        <Grid columns={3}>
                             <Grid.Row>
                                 <Grid.Column>
                                     <Form.Field>
@@ -381,7 +387,7 @@ class App extends Component {
                         </Grid>
                     </Form>
 
-                    <Grid.Row >
+                    <Grid.Row>
                         <Grid.Column width={13}>
                             <div className="chart">
                                 <ResponsiveTreeMapHtml
@@ -416,8 +422,7 @@ class App extends Component {
 
                 </Grid>
             )
-
-        }
+        } // else.....slut
 
     } // render slut..
 } export default App;

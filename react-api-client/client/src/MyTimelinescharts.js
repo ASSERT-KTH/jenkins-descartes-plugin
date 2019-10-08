@@ -43,7 +43,7 @@ export default class MyTimelinescharts extends Component {
             }
         ]
 
-        this.mycolor = d3.scaleOrdinal(['#47b39d', '#eb6b56', '#D3D3D3', '#ffc153'])
+        this.mycolor = d3.scaleOrdinal(['#47b39d', '#D3D3D3', '#eb6b56', '#ffc153'])
 
         this.mydata_untouched = []
         this.state = {
@@ -68,7 +68,7 @@ export default class MyTimelinescharts extends Component {
 
         if (value === 'default')
         {
-            this.mycolor = d3.scaleOrdinal(['#47b39d', '#eb6b56', '#D3D3D3', '#ffc153'])
+            this.mycolor = d3.scaleOrdinal(['#47b39d', '#D3D3D3', '#eb6b56', '#ffc153'])
             this.mydata = this.mydata_untouched
         }
         if (value === 'timeslide_partially_tested')

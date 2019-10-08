@@ -49,7 +49,7 @@ export default class MyTimelinescharts extends Component {
 
             data_loaded : false,
 
-            value: 'default',
+        //    value: 'default',
             timeslide_version : this.mydata, //"[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
 
             // får göra en fuling..
@@ -104,7 +104,7 @@ export default class MyTimelinescharts extends Component {
 
                     data_loaded : true,
 
-                    value: 'default',
+                  //  value: 'default',
                     timeslide_version : res, //"[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
 
                     // får göra en fuling..
@@ -116,6 +116,7 @@ export default class MyTimelinescharts extends Component {
             .then((res) => {
 
                 this.myFunction(res);
+
             })
     }
 
@@ -159,9 +160,8 @@ export default class MyTimelinescharts extends Component {
 
     render() {
 
-         if (this.state.data_loaded === false) {
-            return null;
-        }
+         if (this.state.data_loaded === true) {
+
 
 
         console.log("------------------typeof.......")
@@ -254,5 +254,7 @@ export default class MyTimelinescharts extends Component {
             </Form>
 
         );
-    }
+    }else return null
+
+                    }
 }

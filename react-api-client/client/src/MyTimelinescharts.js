@@ -7,6 +7,7 @@ import { default as TimelinesChart } from 'timelines-chart';
 import {Grid, Form, Checkbox, Segment} from "semantic-ui-react";
 
 import './MyTimelinescharts.css';
+import * as d3 from "d3";
 
 export default class MyTimelinescharts extends Component {
 
@@ -42,6 +43,8 @@ export default class MyTimelinescharts extends Component {
             }
         ]
 
+        this.mycolor = d3.scaleOrdinal(['#47b39d', '#eb6b56', '#D3D3D3', '#ffc153'])
+
         this.mydata_untouched = []
         this.state = {
 
@@ -65,20 +68,21 @@ export default class MyTimelinescharts extends Component {
 
         if (value === 'default')
         {
+            this.mycolor = d3.scaleOrdinal(['#47b39d', '#eb6b56', '#D3D3D3', '#ffc153'])
             this.mydata = this.mydata_untouched
         }
         if (value === 'timeslide_partially_tested')
         {
-
-
+            this.mycolor = d3.scaleOrdinal(['#ffc153'])
             this.mydata = this.mydata_untouched
             this.mydata = this.filterTests(this.mydata, "partially-tested")
         }
 
         if (value === 'timeslide_pseudo_tested')
         {
-            this.mydata = this.mydata_untouched
-            this.mydata = this.filterTests(this.mydata, "pseudo-tested")
+            this.mycolor = d3.scaleOrdinal(['#eb6b56'])
+            this.mydata  = this.mydata_untouched
+            this.mydata  = this.filterTests(this.mydata, "pseudo-tested")
         }
 
 
@@ -162,14 +166,13 @@ export default class MyTimelinescharts extends Component {
 
          if (this.state.data_loaded === true) {
 
-
-
         console.log("------------------typeof.......")
         console.log(typeof this.state.commit_data.timeslide_all)
         console.log("-------------------------------")
 
 
-        this.map = TimelinesChart().data(this.mydata).zQualitative(true).width(1400)    // JSON.parse(this.state.commit_data.timeslide_all)).zQualitative(true).width(1400)
+
+        this.map = TimelinesChart().data(this.mydata).zQualitative(true).zColorScale(this.mycolor).width(1400)    // JSON.parse(this.state.commit_data.timeslide_all)).zQualitative(true).width(1400)
         this.map(this.refs.map)
 
      /*
@@ -252,9 +255,7 @@ export default class MyTimelinescharts extends Component {
 
                 </Grid>
             </Form>
-
         );
     }else return null
-
-                    }
+   }
 }

@@ -17,7 +17,7 @@ db.once('open', function() {
     console.log('db connected...')
 });
 
-var jenkins_project_name = 'test_development'  // test
+var jenkins_project_name = 'test' //'test_development'  // test
 
 // SAVE for re-authentication
 var my_context
@@ -48,9 +48,6 @@ module.exports = app => {
        }
        else
        {
-           jenkins.job.build({name: jenkins_project_name, parameters: { commitid: context.payload.head_commit.id } }, function(err) {
-               if (err) throw err;
-           });
            console.log("-------------------- Beware! -> this is not a commit from spoon repo - Jenkins Aborted!......")
        }
 
@@ -500,7 +497,7 @@ module.exports = app => {
 
                     console.log(JSON.stringify(merged_DATA,null, 2))  // kolla de blev... -1 sekund..  -> FUNKAR
 
-                 //   update_timeslide_DB(merged_DATA)
+                    update_timeslide_DB(merged_DATA)
                 }
 
                 function merge2one(from_DB, from_methods_file, timestamp)

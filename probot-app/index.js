@@ -131,6 +131,9 @@ module.exports = app => {
                         "pseudotested_links": []
                     };
 
+                    //...NEW...
+                    //tests:[]
+
                     array_all.push(jsonObj_child)
                 }
 
@@ -165,9 +168,16 @@ module.exports = app => {
 
                                var myObj = {[linkstring]: link};
 
+                                var myObj_tests = {["tests"]: obj['tests']};
+
                                entry.partiallytested_links.push(myObj);
                                //   "linkstring" : "https://github.com/" //+ owner + "/"+ repo + "/blob/{commit}/src/main/java/{method.package}/{filename}#L{linenumber}"
                             }
+                            entry.partiallytested_links.push(
+
+                                myObj_tests
+                            );
+
                             if (obj.classification === 'pseudo-tested')
                             {
                                entry.pseudotested = entry.pseudotested + 1

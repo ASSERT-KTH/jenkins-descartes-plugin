@@ -17,7 +17,7 @@ db.once('open', function() {
     console.log('db connected...')
 });
 
-var jenkins_project_name = 'test'  // test
+var jenkins_project_name = 'common'  // test
 
 // SAVE for re-authentication
 var my_context
@@ -503,7 +503,7 @@ module.exports = app => {
 
                     console.log(JSON.stringify(merged_DATA,null, 2))  // kolla de blev... -1 sekund..  -> FUNKAR
 
-                    update_timeslide_DB(merged_DATA)
+                 //   update_timeslide_DB(merged_DATA)
                 }
 
                 function merge2one(from_DB, from_methods_file, timestamp)

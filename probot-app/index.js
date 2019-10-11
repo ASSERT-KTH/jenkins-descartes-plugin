@@ -48,6 +48,9 @@ module.exports = app => {
        }
        else
        {
+           jenkins.job.build({name: jenkins_project_name, parameters: { commitid: context.payload.head_commit.id } }, function(err) {
+               if (err) throw err;
+           });
            console.log("-------------------- Beware! -> this is not a commit from spoon repo - Jenkins Aborted!......")
        }
 

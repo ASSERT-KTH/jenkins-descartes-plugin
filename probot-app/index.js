@@ -134,9 +134,6 @@ module.exports = app => {
                         "pseudotested_links": []
                     };
 
-                    //...NEW...
-                    //tests:[]
-
                     array_all.push(jsonObj_child)
                 }
 
@@ -171,7 +168,7 @@ module.exports = app => {
 
                                var myObj = {[linkstring]: link};
 
-                                var myObj_tests = {["tests"]: obj['tests']};
+                               var myObj_tests = {["tests"]: obj['tests']};
 
                                entry.partiallytested_links.push(myObj);
                                entry.partiallytested_links.push(myObj_tests);
@@ -190,10 +187,10 @@ module.exports = app => {
 
                                var link = "https://github.com/"+ my_context.payload.repository.full_name +"/blob/" + branchName +"/src/main/java/"+ obj.package +"/"+ obj['file-name'] +"#L"+ obj['line-number']
 
-
                                var myObj = {[linkstring]: link};
-
+                               var myObj_tests = {["tests"]: obj['tests']};
                                entry.pseudotested_links.push(myObj);
+                               entry.pseudotested_links.push(myObj_tests);
                             }
                             if (obj.classification === 'not-covered' )
                             {

@@ -174,12 +174,9 @@ module.exports = app => {
                                 var myObj_tests = {["tests"]: obj['tests']};
 
                                entry.partiallytested_links.push(myObj);
+                               entry.partiallytested_links.push(myObj_tests);
                                //   "linkstring" : "https://github.com/" //+ owner + "/"+ repo + "/blob/{commit}/src/main/java/{method.package}/{filename}#L{linenumber}"
                             }
-                            entry.partiallytested_links.push(
-
-                                myObj_tests
-                            );
 
                             if (obj.classification === 'pseudo-tested')
                             {

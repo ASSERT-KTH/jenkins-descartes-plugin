@@ -72,7 +72,7 @@ class Pseudoview extends Component {
                         //  console.log(attrValue)
                         this.state.treeview_items.push(<p className="mymethod"><a href={attrValue}>{lastPart}</a></p>)
                     }
-                    if (String(key).indexOf('test') > -1) // if key contains 'link' .. 1..2..
+                    if (String(key).indexOf('tests') > -1) // if key contains 'link' .. 1..2..
                     {
                         console.log(attrValue)  // här kommer en array!!
 

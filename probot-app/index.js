@@ -54,11 +54,8 @@ module.exports = app => {
         my_context = context
     })
 
-  // Get an express router to expose new HTTP endpoints
   const router = app.route('/')
-
-  // Use any middleware
-  router.use(require('express').static('public'))
+        router.use(require('express').static('public'))
 
     var bodyParser = require('body-parser')
 
@@ -67,12 +64,10 @@ module.exports = app => {
 
     const asyncHandler = require('express-async-handler')
 
-              // --/  är det...                              , next ... tog bort det...
+
     router.post('/app', jsonParser, asyncHandler(async (req, res, next) => {
-//      router.post('/app', jsonParser, (req, res) => {
 
     // getting expired credential
-
     //the token used in `context.github` expires after 59 minutes and Probot caches it.
     //Since you have `context.payload.installation.id`, you can reauthenticate the client with:
 
@@ -139,8 +134,6 @@ module.exports = app => {
                 {
                     var obj = allmethods[i];
 
-  //                  console.log(obj.package);
-
                     array_all.forEach(function(entry) {
 
                         if(obj.package === entry.name)
@@ -169,7 +162,6 @@ module.exports = app => {
 
                                entry.partiallytested_links.push(myObj);
                                entry.partiallytested_links.push(myObj_tests);
-                               //   "linkstring" : "https://github.com/" //+ owner + "/"+ repo + "/blob/{commit}/src/main/java/{method.package}/{filename}#L{linenumber}"
                             }
 
                             if (obj.classification === 'pseudo-tested')
@@ -177,8 +169,6 @@ module.exports = app => {
                                entry.pseudotested = entry.pseudotested + 1
 
                                var linkstring = "link " + entry.pseudotested
-
-                             //  var link = "https://github.com/martinch-kth/commons-codec/tree/trunk/src/main/java/"+ obj.package +"/"+ obj['file-name'] +"#L"+ obj['line-n$
 
                                var branchName = String(my_context.payload.ref).split('/').pop();
 
@@ -316,7 +306,6 @@ module.exports = app => {
           }
 
                 // jenkins parsing
-                //    let jenkins_json = JSON.stringify(req.body) // jenkins info...
                 console.log(req.body)
 
                 var jenkinsobj = jsonQ(req.body)
@@ -336,7 +325,6 @@ module.exports = app => {
                 var treemap_partial  ='{"name":"Mutation test","color":"hsl(187, 70%, 50%)","children":'
 
                 var close_result_partial = '}'
-
 
                 var stat = new Stats({ commit_id: my_context.payload.head_commit.id,
                                        date: my_context.payload.head_commit.timestamp,
@@ -372,7 +360,6 @@ module.exports = app => {
 
                 })
 
-             //   return my_context.github.repos.createStatus(commitstatus)
                 res.send(my_github.repos.createStatus(commitstatus))
 
 
@@ -410,38 +397,44 @@ module.exports = app => {
 
                     var allmethods = methodsjson.methods
 
-// ----------- fix timestamp----------------
-// timestamp - få tiden som då commiten gjordes, fås från github payload = FROM
                     var FROM_fake_payload_date = new Date(payload_timestamp);
 
-// faking the TO date, since we don't know when the next commit will be. The TO date will be changed on the next commit.
-
+                    // faking the TO date, since we don't know when the next commit will be. The TO date will be changed on the next commit.
                     var TO_fake_payload_date = new Date(payload_timestamp);
                     TO_fake_payload_date.setHours(FROM_fake_payload_date.getHours() + 1); // faking it with +1 hour..in todays date
 
 //---------------------------------- make timeslide DATA from methods.js --------------------------
-                    for (var i = 0; i < allmethods.length; i++) {
+                    for (var i = 0; i < allmethods.length; i++)
+                    {
                         var testmethod = allmethods[i];
 
-                        var textArray = [
-                            'tested',
-                            'partially-tested',
-                            'pseudo-tested',
-                            'not-covered'
-                        ];
-                        var randomNumber = Math.floor(Math.random()*textArray.length);
+                        if (testmethod.classification === 'pseudo-tested' || 'partially-tested')
+                        {
+                            let map = new Map();
+
+                            for (var j = 0; j < testmethod['tests'].length; j++) {
+
+                                var attrValue = testmethod['tests']
+                                var lastPart_test = attrValue[j].split(".").pop().slice(0, -1);
+
+                                // if map does not contain ...lastpart..
+                                if (!map.has(lastPart_test))
+                                    map.set(lastPart_test, 1);
+                                else map.set(lastPart_test, (map.get(lastPart_test))+1);
+                            }
+
+                            var method_package_and_all_test = testmethod.package + "\n\n"
+
+                            for (const [key, value] of map.entries()) {
+                                method_package_and_all_test += key + " " + value + "\n"
+                            }
+                        }
+                        else method_package_and_all_test = testmethod.package
 
                         // create unique KEY .. looks bad..bad way...!...... FIX later...
-                        //  var poo = new timeslide_entry(testmethod.name + testmethod['line-number'], testmethod.package, textArray[randomNumber], FROM_fake_payload_date, TO_fake_payload_date)
-                        //  all_timeslide_entries.push(poo.returnEntry())
-
-
-                        // create unique KEY .. looks bad..bad way...!...... FIX later...
-                        var poo = new timeslide_entry(testmethod.name + testmethod['line-number'], testmethod.package, testmethod.classification, FROM_fake_payload_date, TO_fake_payload_date)
-                        all_timeslide_entries.push(poo.returnEntry())
-
+                        var entry = new timeslide_entry(testmethod.name + testmethod['line-number'], method_package_and_all_test, testmethod.classification, FROM_fake_payload_date, TO_fake_payload_date)
+                        all_timeslide_entries.push(entry.returnEntry())
                     }
-
                     return all_timeslide_entries
                 }
 
@@ -502,24 +495,10 @@ module.exports = app => {
 
                 function merge2one(from_DB, from_methods_file, timestamp)
                 {
-
-
-                    // backa den sista commiten som finns i DB med 100 sekunder..
-
-                    // nu kommer den nya commiten ha start tid som är 100 sekunder IFRÅN sist commiten i DB..
-
-                    //    sista DB commit <---100 sec---> nya commit
-
-                    // vad händer om flera commits kommer in.. mellanrummet...det vita.. är det för litet??...
-
-                    // minns inte vad som hände.. varför blev det
-
                     var to_date_edited = new Date(timestamp)
 
-
-             // SKIPPA ta bor 100 sek..slut datum kan va samma som nästa commits start datum....funkar IAF!?       to_date_edited.setSeconds(to_date_edited.getSeconds() - 100)  // 100 sekund..vet ej.. vad som händer om man kommitar en massa...låt bli 4 now..
+                     // SKIPPA ta bor 100 sek..slut datum kan va samma som nästa commits start datum....funkar IAF!?       to_date_edited.setSeconds(to_date_edited.getSeconds() - 100)  // 100 sekund..vet ej.. vad som händer om man kommitar en massa...låt bli 4 now..
                     // Du måste ändra i TO datum i det som redan finns i DB
-
 
                     for (var i = 0; i < from_DB.length; i++)
                     {
@@ -542,8 +521,6 @@ module.exports = app => {
                             }
                         }
                     }
-//  console.log(JSON.stringify(from_methods_file,null, 2))  // kolla de blev... -1 sekund..  -> testad redan - FUNKAR
-
                     return from_methods_file;
                 }
 
@@ -556,16 +533,11 @@ module.exports = app => {
                         console.log("1 document updated");
                     });
                 }
-
-
-                //---------------------------------------
-                // behöver:
-
+              //---------------Timeslide------------------------
               var timeslide_DB_DATA = getTimeslide_DB_data(jsonfile, payload_timestamp)
-
-                // vet inte va ja ska göra med retur datat.. :-/ console.log något??
            }
         })
-    })    )
+    })
+   )
 }
 

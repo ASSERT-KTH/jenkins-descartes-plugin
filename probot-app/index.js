@@ -533,8 +533,57 @@ module.exports = app => {
                         console.log("1 document updated");
                     });
                 }
-              //---------------Timeslide------------------------
+
+                function create_patterns() {
+
+                    var query = timeslide_db.find({ username: 'MartinO'}).lean().exec(function (err, docs) {
+
+                        // docs are plain javascript objects instead of model instances
+                        var timeslide_raw = JSON.parse(docs[0].timeslide_all)
+
+                        console.log( Object.getPrototypeOf(timeslide_raw))
+                        console.log( timeslide_raw.length)
+
+                        var timeslide_good_pattern = []
+                        var timeslide_problem_green_to_yellow = []
+                        var timeslide_problem_green_to_red = []
+
+                        for (var i=0 ;i < timeslide_raw.length;i++)
+                        {
+                            // get latest/commit/value of all the commited methods.. like in timespan.. last element in the timespan and its VALUE
+                            var last_value_in = timeslide_raw[i].data[0].data[0].val
+
+                            for (var j = 0; j < timeslide_raw[i].data[0].data.length; j++) // stega igenom all timeRange+values i metoden..
+                            {
+                                var value = timeslide_raw[i].data[0].data[j].val              // få value... tested, non-covered osv..
+
+                                if (last_value_in === 'tested' && value !== 'tested') {  // om sista commiten är 'tested' men det finns commits innan som inte gav tested så är det bra..
+                                    timeslide_good_pattern.push(timeslide_raw[i])
+                                }
+                                else if (last_value_in === 'partially-tested' && value === 'tested' )
+                                {
+                                    timeslide_problem_green_to_yellow.push(timeslide_raw[i])
+                                }
+                                else if (last_value_in === 'pseudo-tested' && value === 'tested' )
+                                {
+                                    timeslide_problem_green_to_red.push(timeslide_raw[i])
+                                }
+                            }
+                        }
+
+                        var myquery = { username: "MartinO" };
+                        var newvalues = { $set: {timeslide_good_pattern : JSON.stringify(timeslide_good_pattern) ,timeslide_problem_green_to_yellow : JSON.stringify(timeslide_problem_green_to_yellow), timeslide_problem_green_to_red : JSON.stringify(timeslide_problem_green_to_red)} };  // this is the field that will be updated...
+                        timeslide_db.updateOne(myquery, newvalues, function(err, res) {
+                            if (err) throw err;
+                            console.log("1 document updated");
+                        });
+
+                    });
+                }
+
+                //---------------Timeslide------------------------
               var timeslide_DB_DATA = getTimeslide_DB_data(jsonfile, payload_timestamp)
+              create_patterns()
            }
         })
     })

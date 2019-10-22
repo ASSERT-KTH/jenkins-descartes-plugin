@@ -25,7 +25,7 @@
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^0.85.0",
     "styled-components": "^4.2.0",
-    "timelines-chart": "^2.8.1"
+    "timelines-chart": "^2.8.4"
   },
   "scripts": {
     "start": "react-scripts start",

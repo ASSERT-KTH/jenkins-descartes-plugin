@@ -47,7 +47,7 @@ ReactDOM.render(
         <MyMenu/>
             <Content>
         <Grid>
-            <Grid.Column width={1} floated='left'>
+            <Grid.Column width={2} >
                 <HeaderMenu
                     onItemClick={item => this.onItemClick(item)}
                     items={[

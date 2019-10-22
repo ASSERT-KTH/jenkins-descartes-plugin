@@ -14,6 +14,7 @@ export default class MyTimelinescharts extends Component {
     constructor(props) {
         super(props);
 
+
         this.mydata = [
             {
                 group: "method1",   // MAN SKULLE BARA KUNNA BYGGA PÅ ... SAMMA GROUP..  måste vara unikt...sen blir de långt å fult kanske.. fukk....
@@ -43,22 +44,24 @@ export default class MyTimelinescharts extends Component {
             }
         ]
 
+        this.timeslide_good_pattern = this.mydata
+
         this.mycolor = d3.scaleOrdinal(['#47b39d', '#D3D3D3', '#eb6b56', '#ffc153'])
 
         this.mydata_untouched = []
         this.state = {
 
-            commit_data : {timeslide_all: this.mydata}, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"} ,
+            commit_data : {timeslide_all: this.mydata, timeslide_good_pattern: this.mydata}, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"} ,
 
             data_loaded : false,
 
         //    value: 'default',
-            timeslide_version : this.mydata, //"[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
+         //   timeslide_version : this.mydata, //"[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
 
             // får göra en fuling..
-            timeslide_default : this.mydata, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
-            timeslide_partially_tested : this.mydata, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
-            timeslide_pseudo_tested : this.mydata // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"
+       //     timeslide_default : this.mydata, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
+       //     timeslide_partially_tested : this.mydata, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
+       //     timeslide_pseudo_tested : this.mydata // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"
         };
     }
 
@@ -84,6 +87,30 @@ export default class MyTimelinescharts extends Component {
             this.mydata  = this.mydata_untouched
             this.mydata  = this.filterTests(this.mydata, "pseudo-tested")
         }
+        if (value === 'timeslide_good_pattern')
+        {
+            this.mycolor = d3.scaleOrdinal(['#D3D3D3','#47b39d'])
+        //    this.mydata  = this.mydata_untouched
+
+            this.mydata  = JSON.parse(this.state.commit_data.timeslide_good_pattern)
+            //this.mydata  = this.filterTests(this.mydata, "pseudo-tested")
+        }
+        if (value === 'timeslide_problem_green_to_yellow')
+        {
+            this.mycolor = d3.scaleOrdinal(['#ffc153','#47b39d'])
+            //    this.mydata  = this.mydata_untouched
+
+            this.mydata  = JSON.parse(this.state.commit_data.timeslide_problem_green_to_yellow)
+            //this.mydata  = this.filterTests(this.mydata, "pseudo-tested")
+        }
+        if (value === 'timeslide_problem_green_to_red')
+        {
+            this.mycolor = d3.scaleOrdinal(['#eb6b56','#47b39d'])
+            //    this.mydata  = this.mydata_untouched
+
+            this.mydata  = JSON.parse(this.state.commit_data.timeslide_problem_green_to_red)
+            //this.mydata  = this.filterTests(this.mydata, "pseudo-tested")
+        }
 
 
         var elem = document.querySelector('#Timelineview');  // UGLY HACK to remove SVG component that keeps on adding to the DIV as children..d3 stuff..
@@ -97,8 +124,8 @@ export default class MyTimelinescharts extends Component {
  //  }
 
     callAPI() {
-     //   fetch("http://localhost:3001/timeslide/getTimeslideData")
-        fetch("http://130.237.59.170:3002/timeslide/getTimeslideData")
+       // fetch("http://localhost:3002/timeslide/getTimeslideData")
+       fetch("http://130.237.59.170:3002/timeslide/getTimeslideData")
             .then(res => res.json())
             .then(
 
@@ -109,12 +136,12 @@ export default class MyTimelinescharts extends Component {
                     data_loaded : true,
 
                   //  value: 'default',
-                    timeslide_version : res, //"[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
+                //    timeslide_version : res, //"[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
 
                     // får göra en fuling..
-                    timeslide_default : res, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
-                    timeslide_partially_tested : res, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
-                    timeslide_pseudo_tested : res // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"
+               //     timeslide_default : res, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
+               //     timeslide_partially_tested : res, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
+               //     timeslide_pseudo_tested : res // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"
 
                 })).catch(err => err)
             .then((res) => {
@@ -126,13 +153,17 @@ export default class MyTimelinescharts extends Component {
 
     myFunction(res) {
 
+      //  alert(typeof this.state.commit_data.timeslide_good_pattern)
+
         if (typeof this.state.commit_data.timeslide_all === 'string')
         {
-            this.mydata = JSON.parse(this.state.commit_data.timeslide_all)
+            this.mydata =                 JSON.parse(this.state.commit_data.timeslide_all)
+        //    this.mydata = JSON.parse(this.state.commit_data.timeslide_good_pattern)
         }
         else
         {
-            this.mydata = this.state.commit_data.timeslide_all
+            this.mydata                 =            this.state.commit_data.timeslide_all
+         //   this.mydata =            this.state.commit_data.timeslide_good_pattern
         }
 
         this.mydata_untouched = this.mydata // save ..
@@ -172,7 +203,7 @@ export default class MyTimelinescharts extends Component {
 
 
 
-        this.map = TimelinesChart().data(this.mydata).zQualitative(true).zColorScale(this.mycolor).width(1400)    // JSON.parse(this.state.commit_data.timeslide_all)).zQualitative(true).width(1400)
+        this.map = TimelinesChart().data(this.mydata).zQualitative(true).zColorScale(this.mycolor).width(1400).leftMargin(200)    // JSON.parse(this.state.commit_data.timeslide_all)).zQualitative(true).width(1400)
         this.map(this.refs.map)
 
      /*
@@ -246,7 +277,42 @@ export default class MyTimelinescharts extends Component {
                                 />
                             </Form.Field>
                         </Grid.Column>
-
+                        <Grid.Column>
+                            <Form.Field>
+                                <Checkbox
+                                    radio
+                                    label='Good pattern - from anything to green'
+                                    name='checkboxRadioGroup'
+                                    value='timeslide_good_pattern'
+                                    checked={this.state.value === 'timeslide_good_pattern'}
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Field>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Form.Field>
+                                <Checkbox
+                                    radio
+                                    label='Problematic patterns - from green to yellow'
+                                    name='checkboxRadioGroup'
+                                    value='timeslide_problem_green_to_yellow'
+                                    checked={this.state.value === 'timeslide_problem_green_to_yellow'}
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Field>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Form.Field>
+                                <Checkbox
+                                    radio
+                                    label='Problematic patterns - from green to red'
+                                    name='checkboxRadioGroup'
+                                    value='timeslide_problem_green_to_red'
+                                    checked={this.state.value === 'timeslide_problem_green_to_red'}
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Field>
+                        </Grid.Column>
                     </Grid.Row>
 
                     <Grid.Row>

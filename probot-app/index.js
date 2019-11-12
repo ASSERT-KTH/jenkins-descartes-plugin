@@ -583,6 +583,8 @@ module.exports = app => {
 
                 //---------------Timeslide------------------------
               var timeslide_DB_DATA = getTimeslide_DB_data(jsonfile, payload_timestamp)
+
+              // create the new filters...   
               create_patterns()
            }
         })

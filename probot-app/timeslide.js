@@ -200,16 +200,73 @@ glob("../../../../../var/lib/jenkins/workspace/test/target/pit-reports/*/methods
                 console.log("Found Records : " + count);
             }
         });
-
-
-
-
 //-------------------------------------
+function create_patterns() {
+
+  var query = timeslide_db.find({ username: 'MartinO'}).lean().exec(function (err, docs) {
+
+    // docs are plain javascript objects instead of model instances
+   // var timeslide_DB_DATA = JSON.parse(docs)  // Must be casted into Array object!
+
+    var timeslide_raw = JSON.parse(docs[0].timeslide_all) // är detta e array..nej..
+
+    console.log( Object.getPrototypeOf(timeslide_raw))   // [{ someshit....}] ....
+    console.log( timeslide_raw.length)   // [{ someshit....}] ....
+
+    var timeslide_good_pattern = []
+    var timeslide_problem_green_to_yellow = []
+    var timeslide_problem_green_to_red = []
+
+    for (var i=0 ;i < timeslide_raw.length;i++)
+    {
+      // get last value of all the commited methods.. like in timespan.. last element in the timespan and its VALUE
+     // var last_value_in = timeslide_raw[i].data.slice(-1)[0].data.slice(-1)[0].val
+
+      // fel borde va först valueee... först är det nyaste..alltså sista commiten!...
+      var last_value_in = timeslide_raw[i].data[0].data[0].val
+
+
+      for (var j = 0; j < timeslide_raw[i].data[0].data.length; j++) // stega igenom all timeRange+values i metoden..
+      {
+        var value = timeslide_raw[i].data[0].data[j].val              // få value... tested, non-covered osv..
+
+        if (last_value_in === 'tested' && value !== 'tested') {  // om sista commiten är 'tested' men det finns commits innan som inte gav tested så är det bra..
+          timeslide_good_pattern.push(timeslide_raw[i])
+        }
+        else if (last_value_in === 'partially-tested' && value === 'tested' )
+        {
+          timeslide_problem_green_to_yellow.push(timeslide_raw[i])
+        }
+        else if (last_value_in === 'pseudo-tested' && value === 'tested' )
+        {
+          timeslide_problem_green_to_red.push(timeslide_raw[i])
+        }
+      }
+
+    }
+    console.log(timeslide_good_pattern[0].data[0])
+    console.log("---------gOOD!-----------")
+    console.log(timeslide_problem_green_to_yellow)
+    console.log("---------gOOD............")
+    console.log(timeslide_problem_green_to_red)
+
+
+    var myquery = { username: "MartinO" };
+    var newvalues = { $set: {timeslide_good_pattern : JSON.stringify(timeslide_good_pattern) ,timeslide_problem_green_to_yellow : JSON.stringify(timeslide_problem_green_to_yellow), timeslide_problem_green_to_red : JSON.stringify(timeslide_problem_green_to_red)} };  // this is the field that will be updated...
+    timeslide_db.updateOne(myquery, newvalues, function(err, res) {
+      if (err) throw err;
+      console.log("1 document updated");
+    });
+
+  });
+}
+//_______________________________
+
 
 
 
         // do once...
-        var timeslide_file_DATA = createTimeslideData(my_jsonfile,  "2019-09-24T01:55:09.856Z")
+        var timeslide_file_DATA = createTimeslideData(my_jsonfile,  "2019-11-12T01:55:09.856Z")
      //   update_timeslide_DB(timeslide_file_DATA)
 
         var stat = new timeslide_db({
@@ -223,7 +280,11 @@ glob("../../../../../var/lib/jenkins/workspace/test/target/pit-reports/*/methods
             if (err) return console.error(err);
         });
 
-
+        /////////////////////////////////////////////
+        create_patterns()
+//////////////////////////////////////////////////
 
     }
 })
+
+

@@ -280,8 +280,7 @@ function create_patterns() {
             if (err) return console.error(err);
         });
 
-        /////////////////////////////////////////////
-        create_patterns()
+
 //////////////////////////////////////////////////
 
     }

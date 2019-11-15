@@ -541,6 +541,9 @@ module.exports = app => {
                         // docs are plain javascript objects instead of model instances
                         var timeslide_raw = JSON.parse(docs[0].timeslide_all)
 
+                        var timeslide_all_partially_tested_in_last_commit = filterTests(timeslide_raw,'partially-tested')
+                        var timeslide_all_pseudo_tested_in_last_commit    = filterTests(timeslide_raw,'pseudo-tested')
+
                         console.log( Object.getPrototypeOf(timeslide_raw))
                         console.log( timeslide_raw.length)
 
@@ -572,7 +575,12 @@ module.exports = app => {
                         }
 
                         var myquery = { username: "MartinO" };
-                        var newvalues = { $set: {timeslide_good_pattern : JSON.stringify(timeslide_good_pattern) ,timeslide_problem_green_to_yellow : JSON.stringify(timeslide_problem_green_to_yellow), timeslide_problem_green_to_red : JSON.stringify(timeslide_problem_green_to_red)} };  // this is the field that will be updated...
+                        var newvalues = { $set: {timeslide_good_pattern : JSON.stringify(timeslide_good_pattern) ,
+                                timeslide_problem_green_to_yellow : JSON.stringify(timeslide_problem_green_to_yellow),
+                                timeslide_problem_green_to_red : JSON.stringify(timeslide_problem_green_to_red),
+                                timeslide_all_partially_tested_in_last_commit : JSON.stringify(timeslide_all_partially_tested_in_last_commit),
+                                timeslide_all_pseudo_tested_in_last_commit : JSON.stringify(timeslide_all_pseudo_tested_in_last_commit)}
+                        };
                         timeslide_db.updateOne(myquery, newvalues, function(err, res) {
                             if (err) throw err;
                             console.log("1 document updated");
@@ -581,10 +589,28 @@ module.exports = app => {
                     });
                 }
 
+                function filterTests(unfiltered_data , filter_type)
+                {
+                    var filtered = []
+
+                    for (var i = 0; i < unfiltered_data.length; i++)
+                    {
+                        var classification = unfiltered_data[i].data[0].data[0].val
+
+                        if (classification === filter_type)
+                        {
+                            var wanted_data = unfiltered_data[i]
+                            wanted_data.data[0].data.length = 1
+                            filtered.push( wanted_data)
+                        }
+                    }
+                    return filtered
+                }
+
                 //---------------Timeslide------------------------
               var timeslide_DB_DATA = getTimeslide_DB_data(jsonfile, payload_timestamp)
 
-              // create the new filters...   
+              // create the new filters...
               create_patterns()
            }
         })

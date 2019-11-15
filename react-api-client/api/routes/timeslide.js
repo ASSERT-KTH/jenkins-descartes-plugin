@@ -19,7 +19,6 @@ router.get('/getTimeslideData', function(req, res) {
         res.send(commits)
     })
 
-
 })
 
 

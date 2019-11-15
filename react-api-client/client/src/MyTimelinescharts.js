@@ -71,6 +71,10 @@ export default class MyTimelinescharts extends Component {
 
         if (value === 'default')
         {
+            // MUST be .. TESTED non-covered , pseudo test , pT .. by default they may not be so!!...
+
+            // måste slänga om så att data är så... bu....
+
             this.mycolor = d3.scaleOrdinal(['#47b39d', '#D3D3D3', '#eb6b56', '#ffc153'])
             this.mydata = this.mydata_untouched
         }
@@ -78,18 +82,18 @@ export default class MyTimelinescharts extends Component {
         {
             this.mycolor = d3.scaleOrdinal(['#ffc153'])
             this.mydata = this.mydata_untouched
-            this.mydata = this.filterTests(this.mydata, "partially-tested")
+            this.mydata = JSON.parse(this.state.commit_data.timeslide_all_partially_tested_in_last_commit)
         }
 
         if (value === 'timeslide_pseudo_tested')
         {
             this.mycolor = d3.scaleOrdinal(['#eb6b56'])
             this.mydata  = this.mydata_untouched
-            this.mydata  = this.filterTests(this.mydata, "pseudo-tested")
+            this.mydata = JSON.parse(this.state.commit_data.timeslide_all_pseudo_tested_in_last_commit)
         }
         if (value === 'timeslide_good_pattern')
         {
-            this.mycolor = d3.scaleOrdinal(['#D3D3D3','#47b39d'])
+            this.mycolor = d3.scaleOrdinal(['#47b39d','#D3D3D3'])
         //    this.mydata  = this.mydata_untouched
 
             this.mydata  = JSON.parse(this.state.commit_data.timeslide_good_pattern)
@@ -124,8 +128,8 @@ export default class MyTimelinescharts extends Component {
  //  }
 
     callAPI() {
-       // fetch("http://localhost:3002/timeslide/getTimeslideData")
-       fetch("http://130.237.59.170:3002/timeslide/getTimeslideData")
+         fetch("http://localhost:3002/timeslide/getTimeslideData")
+      // fetch("http://130.237.59.170:3002/timeslide/getTimeslideData")
             .then(res => res.json())
             .then(
 
@@ -133,15 +137,7 @@ export default class MyTimelinescharts extends Component {
 
                     commit_data : res, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"} ,
 
-                    data_loaded : true,
-
-                  //  value: 'default',
-                //    timeslide_version : res, //"[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
-
-                    // får göra en fuling..
-               //     timeslide_default : res, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
-               //     timeslide_partially_tested : res, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
-               //     timeslide_pseudo_tested : res // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"
+                    data_loaded : true
 
                 })).catch(err => err)
             .then((res) => {
@@ -203,7 +199,7 @@ export default class MyTimelinescharts extends Component {
 
 
 
-        this.map = TimelinesChart().data(this.mydata).zQualitative(true).zColorScale(this.mycolor).width(1400).leftMargin(200)    // JSON.parse(this.state.commit_data.timeslide_all)).zQualitative(true).width(1400)
+        this.map = TimelinesChart().data(this.mydata).zQualitative(true).zColorScale(this.mycolor).width(1400).leftMargin(200).zScaleLabel(["whatis"])    // JSON.parse(this.state.commit_data.timeslide_all)).zQualitative(true).width(1400)
         this.map(this.refs.map)
 
      /*
@@ -241,18 +237,6 @@ export default class MyTimelinescharts extends Component {
 
 
                     <Grid.Row>
-                        <Grid.Column>
-                            <Form.Field>
-                                <Checkbox
-                                    radio
-                                    label='Default'
-                                    name='checkboxRadioGroup'
-                                    value='default'
-                                    checked={this.state.value === 'default'}
-                                    onChange={this.handleChange}
-                                />
-                            </Form.Field>
-                        </Grid.Column>
                         <Grid.Column>
                             <Form.Field>
                                 <Checkbox

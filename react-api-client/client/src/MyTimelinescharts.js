@@ -48,20 +48,10 @@ export default class MyTimelinescharts extends Component {
 
         this.mycolor = d3.scaleOrdinal(['#47b39d', '#D3D3D3', '#eb6b56', '#ffc153'])
 
-        this.mydata_untouched = []
         this.state = {
 
-            commit_data : {timeslide_all: this.mydata, timeslide_good_pattern: this.mydata}, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"} ,
-
-            data_loaded : false,
-
-        //    value: 'default',
-         //   timeslide_version : this.mydata, //"[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
-
-            // får göra en fuling..
-       //     timeslide_default : this.mydata, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
-       //     timeslide_partially_tested : this.mydata, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]",
-       //     timeslide_pseudo_tested : this.mydata // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"
+            commit_data : {timeslide_all: this.mydata, timeslide_good_pattern: this.mydata},
+            data_loaded : false
         };
     }
 
@@ -69,51 +59,46 @@ export default class MyTimelinescharts extends Component {
 
         this.setState({value})
 
-        if (value === 'default')
+        if (value === 'updated_methods_last_commit')
         {
-            // MUST be .. TESTED non-covered , pseudo test , pT .. by default they may not be so!!...
+            this.mydata = JSON.parse(this.state.commit_data.updated_methods_last_commit)
 
-            // måste slänga om så att data är så... bu....
-
-            this.mycolor = d3.scaleOrdinal(['#47b39d', '#D3D3D3', '#eb6b56', '#ffc153'])
-            this.mydata = this.mydata_untouched
+            var colorz = this.createColorArray(this.mydata)
+            this.mycolor = d3.scaleOrdinal(colorz)
         }
         if (value === 'timeslide_partially_tested')
         {
-            this.mycolor = d3.scaleOrdinal(['#ffc153'])
-            this.mydata = this.mydata_untouched
             this.mydata = JSON.parse(this.state.commit_data.timeslide_all_partially_tested_in_last_commit)
+            var colorz = this.createColorArray(this.mydata)
+            this.mycolor = d3.scaleOrdinal(colorz)
         }
 
         if (value === 'timeslide_pseudo_tested')
         {
-            this.mycolor = d3.scaleOrdinal(['#eb6b56'])
-            this.mydata  = this.mydata_untouched
             this.mydata = JSON.parse(this.state.commit_data.timeslide_all_pseudo_tested_in_last_commit)
+            var colorz = this.createColorArray(this.mydata)
+            this.mycolor = d3.scaleOrdinal(colorz)
         }
         if (value === 'timeslide_good_pattern')
         {
-            this.mycolor = d3.scaleOrdinal(['#47b39d','#D3D3D3'])
-        //    this.mydata  = this.mydata_untouched
+            this.mydata = JSON.parse(this.state.commit_data.timeslide_good_pattern)
 
-            this.mydata  = JSON.parse(this.state.commit_data.timeslide_good_pattern)
-            //this.mydata  = this.filterTests(this.mydata, "pseudo-tested")
+            var colorz = this.createColorArray(this.mydata)
+            this.mycolor = d3.scaleOrdinal(colorz)
         }
         if (value === 'timeslide_problem_green_to_yellow')
         {
-            this.mycolor = d3.scaleOrdinal(['#ffc153','#47b39d'])
-            //    this.mydata  = this.mydata_untouched
-
             this.mydata  = JSON.parse(this.state.commit_data.timeslide_problem_green_to_yellow)
-            //this.mydata  = this.filterTests(this.mydata, "pseudo-tested")
+
+            var colorz = this.createColorArray(this.mydata)
+            this.mycolor = d3.scaleOrdinal(colorz)
         }
         if (value === 'timeslide_problem_green_to_red')
         {
-            this.mycolor = d3.scaleOrdinal(['#eb6b56','#47b39d'])
-            //    this.mydata  = this.mydata_untouched
-
             this.mydata  = JSON.parse(this.state.commit_data.timeslide_problem_green_to_red)
-            //this.mydata  = this.filterTests(this.mydata, "pseudo-tested")
+
+            var colorz = this.createColorArray(this.mydata)
+            this.mycolor = d3.scaleOrdinal(colorz)
         }
 
 
@@ -135,7 +120,7 @@ export default class MyTimelinescharts extends Component {
 
                 res => this.setState({
 
-                    commit_data : res, // "[{\"group\":\"method1\",\"data\":[{\"label\":\"package\",\"data\":[{\"timeRange\":[\"2019-06-01\",\"2019-06-05\"],\"val\":\"Tested\"}]}]}]"} ,
+                    commit_data : res,
 
                     data_loaded : true
 
@@ -143,7 +128,6 @@ export default class MyTimelinescharts extends Component {
             .then((res) => {
 
                 this.myFunction(res);
-
             })
     }
 
@@ -171,22 +155,45 @@ export default class MyTimelinescharts extends Component {
 
     }
 
-    filterTests(unfiltered_data , filter_type)
-    {
-        var filtered = []
+    createColorArray(mydata) {
 
-        for (var i = 0; i < unfiltered_data.length; i++)
+        var all_classifications = []
+
+        for (var i = 0; i < mydata.length; i++)
         {
-            var classification = unfiltered_data[i].data[0].data[0].val
+            var all_classtypes = mydata[i].data[0].data
+            // måste gå igenom ALLA värden.. buhu
 
-            if (classification === filter_type)
+            for (var j = 0; j < all_classtypes.length; j++)
             {
-                var wanted_data = unfiltered_data[i]
-                wanted_data.data[0].data.length = 1
-                filtered.push( wanted_data)
+                all_classifications.push(all_classtypes[j].val)
+                console.log(all_classtypes[j].val)
             }
         }
-        return filtered
+
+        var uniqueItems = Array.from(new Set(all_classifications)) // make array of unique values
+
+        var colorArray = []
+
+        for (var i = 0; i < uniqueItems.length; i++) {
+            if (uniqueItems[i] === "tested") {
+                colorArray.push("#47b39d")
+            }
+            if (uniqueItems[i] === "pseudo-tested") {
+                colorArray.push("#eb6b56")
+            }
+            if (uniqueItems[i] === "partially-tested") {
+                colorArray.push("#ffc153")
+            }
+            if (uniqueItems[i] === "not-covered")
+            {
+                colorArray.push("#D3D3D3")
+            }
+        }
+
+        console.log(JSON.stringify(colorArray))
+
+        return colorArray
     }
 
     render() {
@@ -223,6 +230,8 @@ export default class MyTimelinescharts extends Component {
         // det är som att de inte är d3 ..på nått sätt..jag vill ju inte ta bort den på en gång...för då har den ingenstans att vara...
         // det bästa vore om den blev en react component på riktigt med tex: encapsule:JSON.stringify(this.state.commit_data.timeslide_all)
 
+
+             // only the methods that have been updated in the last commit
         return (
 
             <Form>
@@ -231,16 +240,27 @@ export default class MyTimelinescharts extends Component {
 
                     <Grid.Row>
                         <Grid.Column width={13}>
-                            <Segment raised>Amount of: {this.mydata.length} </Segment>
+                            <Segment raised>Number of methods: {this.mydata.length} </Segment>
                         </Grid.Column>
                     </Grid.Row>
-
 
                     <Grid.Row>
                         <Grid.Column>
                             <Form.Field>
-                                <Checkbox
-                                    radio
+
+
+                                <Checkbox radio
+                                    label='Only the methods that have been updated in the last commit'
+                                    name='checkboxRadioGroup'
+                                    value='updated_methods_last_commit'
+                                    checked={this.state.value === 'updated_methods_last_commit'}
+                                    onChange={this.handleChange}
+                                />
+                            </Form.Field>
+                        </Grid.Column>
+                        <Grid.Column>
+                            <Form.Field>
+                                <Checkbox radio
                                     label='All Pseudo tested methods in the last commit'
                                     name='checkboxRadioGroup'
                                     value='timeslide_pseudo_tested'

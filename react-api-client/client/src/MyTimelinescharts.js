@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 
-import axios from 'axios';
-
 import { default as TimelinesChart } from 'timelines-chart';
 
 import {Grid, Form, Checkbox, Segment} from "semantic-ui-react";
 
-import './MyTimelinescharts.css';
 import * as d3 from "d3";
 
 export default class MyTimelinescharts extends Component {
@@ -39,10 +36,11 @@ export default class MyTimelinescharts extends Component {
                         ]
                     },
 
-
                 ]
             }
         ]
+
+        this.value = "timeslide_pseudo_tested"
 
         this.timeslide_good_pattern = this.mydata
 
@@ -239,7 +237,7 @@ export default class MyTimelinescharts extends Component {
                 <Grid columns={1} >
 
                     <Grid.Row>
-                        <Grid.Column width={13}>
+                        <Grid.Column width={6}>
                             <Segment raised>Number of methods: {this.mydata.length} </Segment>
                         </Grid.Column>
                     </Grid.Row>
@@ -247,9 +245,8 @@ export default class MyTimelinescharts extends Component {
                     <Grid.Row>
                         <Grid.Column>
                             <Form.Field>
+                                <Checkbox
 
-
-                                <Checkbox radio
                                     label='Only the methods that have been updated in the last commit'
                                     name='checkboxRadioGroup'
                                     value='updated_methods_last_commit'
@@ -258,9 +255,11 @@ export default class MyTimelinescharts extends Component {
                                 />
                             </Form.Field>
                         </Grid.Column>
+
                         <Grid.Column>
                             <Form.Field>
-                                <Checkbox radio
+                                <Checkbox
+
                                     label='All Pseudo tested methods in the last commit'
                                     name='checkboxRadioGroup'
                                     value='timeslide_pseudo_tested'
@@ -272,7 +271,6 @@ export default class MyTimelinescharts extends Component {
                         <Grid.Column>
                             <Form.Field>
                                 <Checkbox
-                                    radio
                                     label='All Partially tested methods in the last commit'
                                     name='checkboxRadioGroup'
                                     value='timeslide_partially_tested'
@@ -284,7 +282,6 @@ export default class MyTimelinescharts extends Component {
                         <Grid.Column>
                             <Form.Field>
                                 <Checkbox
-                                    radio
                                     label='Good pattern - from anything to green'
                                     name='checkboxRadioGroup'
                                     value='timeslide_good_pattern'
@@ -296,7 +293,6 @@ export default class MyTimelinescharts extends Component {
                         <Grid.Column>
                             <Form.Field>
                                 <Checkbox
-                                    radio
                                     label='Problematic patterns - from green to yellow'
                                     name='checkboxRadioGroup'
                                     value='timeslide_problem_green_to_yellow'
@@ -308,7 +304,6 @@ export default class MyTimelinescharts extends Component {
                         <Grid.Column>
                             <Form.Field>
                                 <Checkbox
-                                    radio
                                     label='Problematic patterns - from green to red'
                                     name='checkboxRadioGroup'
                                     value='timeslide_problem_green_to_red'

@@ -111,8 +111,8 @@ export default class MyTimelinescharts extends Component {
  //  }
 
     callAPI() {
-       //  fetch("http://localhost:3002/timeslide/getTimeslideData")
-       fetch("http://130.237.59.170:3002/timeslide/getTimeslideData")
+         fetch("http://localhost:3002/timeslide/getTimeslideData")
+      // fetch("http://130.237.59.170:3002/timeslide/getTimeslideData")
             .then(res => res.json())
             .then(
 
@@ -234,7 +234,7 @@ export default class MyTimelinescharts extends Component {
 
             <Form>
 
-                <Grid columns={1} >
+                <Grid columns={1}>
 
                     <Grid.Row>
                         <Grid.Column width={6}>

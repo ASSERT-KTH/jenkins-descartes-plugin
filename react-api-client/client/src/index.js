@@ -54,7 +54,7 @@ ReactDOM.render(
                         ["Commit Results", "/"],  // + commit-id som kommer in...
                         ["Partially Tested", "/partiallytested"],
                         ["Pseudo Tested", "/pseudotested"],
-                        ["Historical Results", "/historicalresults"],
+                      //  ["Historical Results", "/historicalresults"],
                         ["Timelines Result", "/timelines"]
                     //    ["Wrong url", "/wrongurl"]
                     ]}
